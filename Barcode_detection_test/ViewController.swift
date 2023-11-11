@@ -10,40 +10,31 @@
 import Vision
 import UIKit
 
-
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var imageView: UIImageView!
     let imagePicker = UIImagePickerController()
+    
+    let formatDate = "\\d{2} \\d{2} \\d{4}"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         imagePicker.delegate = self
     }
     
-    
-    func detectBarcode(in image: CIImage) {
-        let request = VNDetectBarcodesRequest { [weak self] request, error in
-            if let error = error {
-                print("Error in detecting - \(error)")
+    func detectText(in image: CIImage, withFormat format: String) {
+        let request = VNRecognizeTextRequest { [weak self] request, error in
+            guard let observations = request.results as? [VNRecognizedTextObservation], error == nil else {
+                print("Error in text detection: \(error?.localizedDescription ?? "unknown error")")
                 return
             }
 
-            guard let observations = request.results as? [VNBarcodeObservation] else {
-                print("No barcode detected.")
-                return
-            }
+            let detectedText = observations.compactMap { $0.topCandidates(1).first?.string }
+            let formattedText = self?.filterText(detectedText, withFormat: format)
 
-            for observation in observations {
-                if let barcodeValue = observation.payloadStringValue {
-                    // Do something with the barcode value
-                    print("Barcode value: \(barcodeValue)")
-
-                    DispatchQueue.main.async {
-                        self?.navigationItem.title = barcodeValue
-                        // You can perform other UI updates here
-                    }
-                }
+            DispatchQueue.main.async {
+                // Update UI with formatted text
+                self?.navigationItem.title = formattedText
             }
         }
 
@@ -51,8 +42,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         do {
             try handler.perform([request])
         } catch {
-            print("Failed to perform barcode detection: \(error)")
+            print("Failed to perform text detection: \(error)")
         }
+    }
+
+    func filterText(_ texts: [String], withFormat format: String) -> String? {
+        let joinedText = texts.joined(separator: " ")
+        let regex = try? NSRegularExpression(pattern: format, options: [])
+        let results = regex?.matches(in: joinedText, options: [], range: NSRange(joinedText.startIndex..., in: joinedText))
+        let formattedStrings = results?.compactMap {
+            Range($0.range, in: joinedText).map { String(joinedText[$0]) }
+        }
+
+        return formattedStrings?.joined(separator: "\n")
     }
 
     
@@ -63,7 +65,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             guard let ciImage = CIImage(image: image) else {
                 fatalError("Couldn't convert UIImage to CIImage.")
             }
-            detectBarcode(in: ciImage)
+            detectText(in: ciImage, withFormat: formatDate)
         }
     }
     
@@ -72,7 +74,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imagePicker.allowsEditing = false
         present(imagePicker, animated: true, completion: nil)
     }
-    
 }
+
 
 
