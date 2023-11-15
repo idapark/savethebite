@@ -8,34 +8,47 @@
 import Vision
 import UIKit
 
-class DetectTextManager: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
+class DetectTextManager: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    @IBOutlet weak var imageView: UIImageView!
+    let imagePicker = UIImagePickerController()
+    
+    // expiration date formats:
+    // DD MM YYYY, D MM YYYY, DD M YYYY, D M YYYY, DD MM YY, MM YYYY
+    let dates1 = ["\\d{2} \\d{2} \\d{4}", "\\d{1} \\d{2} \\d{4}", "\\d{2} \\d{1} \\d{4}", "\\d{1} \\d{1} \\d{4}", "\\d{2} \\d{2} \\d{2}", "\\d{2} \\d{4}"]
+    // DD.MM.YYYY, D.MM.YYYY, DD.M.YYYY, D.M.YYYY, DD.MM.YY, MM.YYYY
+    let dates2 = ["\\d{2}.\\d{2}.\\d{4}", "\\d{1}.\\d{2}.\\d{4}", "\\d{2}.\\d{1}.\\d{4}", "\\d{1}.\\d{1}.\\d{4}", "\\d{2}.\\d{2}.\\d{2}", "\\d{2}.\\d{4}"]
+    // DD-MM-YYYY, D-MM-YYYY, DD-M-YYYY, D-M-YYYY, DD-MM-YY, MM-YYYY
+    let dates3 = ["\\d{2}-\\d{2}-\\d{4}", "\\d{1}-\\d{2}-\\d{4}", "\\d{2}-\\d{1}-\\d{4}", "\\d{1}-\\d{1}-\\d{4}", "\\d{2}-\\d{2}-\\d{2}", "\\d{2}-\\d{4}"]
+    // DD/MM/YYYY, D/MM/YYYY, DD/M/YYYY, D/M/YYYY, DD/MM/YY, MM/YYYY
+    let dates4 = ["\\d{2}/\\d{2}/\\d{4}", "\\d{1}/\\d{2}/\\d{4}", "\\d{2}/\\d{1}/\\d{4}", "\\d{1}/\\d{1}/\\d{4}", "\\d{2}/\\d{2}/\\d{2}", "\\d{2}/\\d{4}"]
+    // DD\MM\YYYY, D\MM\YYYY, DD\M\YYYY, D\M\YYYY, DD\MM\YY, MM\YYYY
+    let dates5 = ["\\d{2}\\\\d{2}\\\\d{4}", "\\d{1}\\\\d{2}\\\\d{4}", "\\d{2}\\\\d{1}\\\\d{4}", "\\d{1}\\\\d{1}\\\\d{4}", "\\d{2}\\\\d{2}\\\\d{2}", "\\d{2}\\\\d{4}"]
+    // DD.MM., DDMMYY
+    let dates6 = ["\\d{2}.\\d{2}.", "\\d{6}"]
+    var formatsDate = [] as [String]
+    
+    
+    func detectText(in image: CIImage, completion: @escaping (String?) -> Void) {
+        formatsDate.append(contentsOf: dates1)
+        formatsDate.append(contentsOf: dates2)
+        formatsDate.append(contentsOf: dates3)
+        formatsDate.append(contentsOf: dates4)
+        formatsDate.append(contentsOf: dates5)
+        formatsDate.append(contentsOf: dates6)
         
-        @IBOutlet weak var imageView: UIImageView!
-        let imagePicker = UIImagePickerController()
-        
-        // expiration date formats:
-        // DD MM YYYY, D MM YYYY, DD M YYYY, D M YYYY, DD MM YY
-        // DD.MM.YYYY, D.MM.YYYY, DD.M.YYYY, D.M.YYYY, DD.MM.YY
-        let formatsDate = ["\\d{2} \\d{2} \\d{4}", "\\d{1} \\d{2} \\d{4}", "\\d{2} \\d{1} \\d{4}", "\\d{1} \\d{1} \\d{4}", "\\d{2} \\d{2} \\d{2}", "\\d{2}.\\d{2}.\\d{4}", "\\d{1}.\\d{2}.\\d{4}", "\\d{2}.\\d{1}.\\d{4}", "\\d{1}.\\d{1}.\\d{4}", "\\d{2}.\\d{2}.\\d{2}", "\\d{6}"]
-        
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            imagePicker.delegate = self
-            
-        }
-        
-        func detectText(in image: CIImage, withFormats formats: [String]) {
             let request = VNRecognizeTextRequest { [weak self] request, error in
                 guard let observations = request.results as? [VNRecognizedTextObservation], error == nil else {
                     print("Error in text detection: \(error?.localizedDescription ?? "unknown error")")
+                    completion(nil)
                     return
                 }
 
                 let detectedText = observations.compactMap { $0.topCandidates(1).first?.string }
-                let formattedText = self?.filterText(detectedText, withFormats: formats)
+                let formattedText = self?.filterText(detectedText, withFormats: self?.formatsDate ?? [])
 
                 DispatchQueue.main.async {
-                    self?.navigationItem.title = formattedText
+                    completion(formattedText)
                 }
             }
 
@@ -44,12 +57,13 @@ class DetectTextManager: UIViewController, UIImagePickerControllerDelegate, UINa
                 try handler.perform([request])
             } catch {
                 print("Failed to perform text detection: \(error)")
+                completion(nil)
             }
         }
 
-        func filterText(_ texts: [String], withFormats formats: [String]) -> String? {
+        private func filterText(_ texts: [String], withFormats formats: [String]) -> String? {
             let joinedText = texts.joined(separator: " ")
-
+            
             for format in formats {
                 let regex = try? NSRegularExpression(pattern: format, options: [])
                 let results = regex?.matches(in: joinedText, options: [], range: NSRange(joinedText.startIndex..., in: joinedText))
@@ -62,22 +76,6 @@ class DetectTextManager: UIViewController, UIImagePickerControllerDelegate, UINa
 
             return nil
         }
-        
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            if let image = info[.originalImage] as? UIImage {
-                imageView.image = image
-                imagePicker.dismiss(animated: true, completion: nil)
-                guard let ciImage = CIImage(image: image) else {
-                    fatalError("Couldn't convert UIImage to CIImage.")
-                }
-                detectText(in: ciImage, withFormats: formatsDate)
-            }
-        }
-        
-        @IBAction func cameraTapped(_ sender: Any) {
-            imagePicker.sourceType = .camera
-            imagePicker.allowsEditing = false
-            present(imagePicker, animated: true, completion: nil)
-        }
     }
+
 
