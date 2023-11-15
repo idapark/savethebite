@@ -28,6 +28,7 @@
 		5E1BFF3B2AFBB85D00B45E56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E1F6FCA2B03852200CFBAE3 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		5E4F919D2B0433ED00F9B915 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		5E4F91A52B04D8BA00F9B915 /* networking_JSON.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = networking_JSON.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +70,7 @@
 				5E1BFF3B2AFBB85D00B45E56 /* Info.plist */,
 				5E1F6FCA2B03852200CFBAE3 /* TableViewController.swift */,
 				5E4F919D2B0433ED00F9B915 /* CustomTableViewCell.swift */,
+				5E4F91A52B04D8BA00F9B915 /* networking_JSON.playground */,
 			);
 			path = Barcode_detection_test;
 			sourceTree = "<group>";
