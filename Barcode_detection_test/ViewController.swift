@@ -16,17 +16,37 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     let imagePicker = UIImagePickerController()
     
     // expiration date formats:
-    // DD MM YYYY, D MM YYYY, DD M YYYY, D M YYYY, DD MM YY
-    // DD.MM.YYYY, D.MM.YYYY, DD.M.YYYY, D.M.YYYY, DD.MM.YY
-    let formatsDate = ["\\d{2} \\d{2} \\d{4}", "\\d{1} \\d{2} \\d{4}", "\\d{2} \\d{1} \\d{4}", "\\d{1} \\d{1} \\d{4}", "\\d{2} \\d{2} \\d{2}", "\\d{2}.\\d{2}.\\d{4}", "\\d{1}.\\d{2}.\\d{4}", "\\d{2}.\\d{1}.\\d{4}", "\\d{1}.\\d{1}.\\d{4}", "\\d{2}.\\d{2}.\\d{2}", "\\d{6}"]
+    // DD MM YYYY, D MM YYYY, DD M YYYY, D M YYYY, DD MM YY, MM YYYY
+    let dates1 = ["\\d{2} \\d{2} \\d{4}", "\\d{1} \\d{2} \\d{4}", "\\d{2} \\d{1} \\d{4}", "\\d{1} \\d{1} \\d{4}", "\\d{2} \\d{2} \\d{2}", "\\d{2} \\d{4}"]
+    // DD.MM.YYYY, D.MM.YYYY, DD.M.YYYY, D.M.YYYY, DD.MM.YY, MM.YYYY
+    let dates2 = ["\\d{2}.\\d{2}.\\d{4}", "\\d{1}.\\d{2}.\\d{4}", "\\d{2}.\\d{1}.\\d{4}", "\\d{1}.\\d{1}.\\d{4}", "\\d{2}.\\d{2}.\\d{2}", "\\d{2}.\\d{4}"]
+    // DD-MM-YYYY, D-MM-YYYY, DD-M-YYYY, D-M-YYYY, DD-MM-YY, MM-YYYY
+    let dates3 = ["\\d{2}-\\d{2}-\\d{4}", "\\d{1}-\\d{2}-\\d{4}", "\\d{2}-\\d{1}-\\d{4}", "\\d{1}-\\d{1}-\\d{4}", "\\d{2}-\\d{2}-\\d{2}", "\\d{2}-\\d{4}"]
+    // DD/MM/YYYY, D/MM/YYYY, DD/M/YYYY, D/M/YYYY, DD/MM/YY, MM/YYYY
+    let dates4 = ["\\d{2}/\\d{2}/\\d{4}", "\\d{1}/\\d{2}/\\d{4}", "\\d{2}/\\d{1}/\\d{4}", "\\d{1}/\\d{1}/\\d{4}", "\\d{2}/\\d{2}/\\d{2}", "\\d{2}/\\d{4}"]
+    // DD\MM\YYYY, D\MM\YYYY, DD\M\YYYY, D\M\YYYY, DD\MM\YY, MM\YYYY
+    let dates5 = ["\\d{2}\\\\d{2}\\\\d{4}", "\\d{1}\\\\d{2}\\\\d{4}", "\\d{2}\\\\d{1}\\\\d{4}", "\\d{1}\\\\d{1}\\\\d{4}", "\\d{2}\\\\d{2}\\\\d{2}", "\\d{2}\\\\d{4}"]
+    // DD.MM., DDMMYY
+    let dates6 = ["\\d{2}.\\d{2}.", "\\d{6}"]
+    var formatsDate = [] as [String]
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         imagePicker.delegate = self
-        
     }
     
     func detectText(in image: CIImage, withFormats formats: [String]) {
+        
+        formatsDate.append(contentsOf: dates1)
+        formatsDate.append(contentsOf: dates2)
+        formatsDate.append(contentsOf: dates3)
+        formatsDate.append(contentsOf: dates4)
+        formatsDate.append(contentsOf: dates5)
+        formatsDate.append(contentsOf: dates6)
+        
+        
         let request = VNRecognizeTextRequest { [weak self] request, error in
             guard let observations = request.results as? [VNRecognizedTextObservation], error == nil else {
                 print("Error in text detection: \(error?.localizedDescription ?? "unknown error")")
@@ -79,9 +99,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func cameraTapped(_ sender: Any) {
         imagePicker.sourceType = .camera
         imagePicker.allowsEditing = false
+        // imagePicker.cameraOverlayView?.layer.addSublayer(previewLayer!)
         present(imagePicker, animated: true, completion: nil)
     }
 }
-
-
-
