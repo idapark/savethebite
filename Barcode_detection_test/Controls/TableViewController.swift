@@ -7,17 +7,10 @@
 
 import UIKit
 
-struct Item {
-    var title: String
-    var image: UIImage?
-    var date: Date
-}
 
 
 class TableViewController: UITableViewController {
 
-    
-    var items: [Date: [Item]] = [:]
 
         override func viewDidLoad() {
             super.viewDidLoad()
@@ -25,24 +18,7 @@ class TableViewController: UITableViewController {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Item", style: .plain, target: self, action: #selector(rightBarButtonTapped))
         }
 
-        func populateItems() {
-            let item1 = Item(title: "Test1", image: UIImage(systemName: "waterbottle"), date: Date())
-            let item2 = Item(title: "Test2", image: UIImage(systemName: "carrot"), date: Date(timeIntervalSinceReferenceDate: -123456789.0))
-
-            addItem(item1)
-            addItem(item2)
-        }
-
-        func addItem(_ item: Item) {
-            let calendar = Calendar.current
-            let components = calendar.dateComponents([.year, .month, .day], from: item.date)
-            guard let dateKey = calendar.date(from: components) else { return }
-
-            if items[dateKey] == nil {
-                items[dateKey] = []
-            }
-            items[dateKey]?.append(item)
-        }
+        
 
     // MARK: - Table view data source
 
