@@ -11,28 +11,29 @@ import UIKit
 
 class TableViewController: UITableViewController {
 
+    var itemManager = ItemManager()
 
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            populateItems()
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Item", style: .plain, target: self, action: #selector(rightBarButtonTapped))
-        }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        itemManager.populateItems()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Item", style: .plain, target: self, action: #selector(rightBarButtonTapped))
+    }
 
         
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return items.keys.count
+        return itemManager.items.keys.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let date = Array(items.keys)[section]
-        return items[date]?.count ?? 0
+        let date = Array(itemManager.items.keys)[section]
+        return itemManager.items[date]?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let date = Array(items.keys)[section]
+        let date = Array(itemManager.items.keys)[section]
         // Format the date as needed
         return DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none)
     }
@@ -42,8 +43,8 @@ class TableViewController: UITableViewController {
             fatalError("Expected CustomTableViewCell")
         }
 
-        let date = Array(items.keys)[indexPath.section]
-        if let item = items[date]?[indexPath.row] {
+        let date = Array(itemManager.items.keys)[indexPath.section]
+        if let item = itemManager.items[date]?[indexPath.row] {
             // Configure your cell...
             cell.customCellLabel.text = item.title
             cell.customCellPicture.image = item.image
