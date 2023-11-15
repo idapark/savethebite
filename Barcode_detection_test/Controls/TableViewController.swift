@@ -14,7 +14,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     
     var itemManager = ItemManager()
     let imagePicker = UIImagePickerController()
-    let textDetectionUtility = DetectTextManager()
+    let textDetectionUtility = DetectBarcodeManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,7 +94,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         imagePicker.dismiss(animated: true, completion: nil)
         
         if let image = info[.originalImage] as? UIImage, let ciImage = CIImage(image: image) {
-            textDetectionUtility.detectText(in: ciImage) { [weak self] detectedText in
+            textDetectionUtility.detectBarcode(in: ciImage) { [weak self] detectedText in
                 guard let self = self else { return } // Safely unwrapping self
                 guard let detectedText = detectedText else {
                     // Handle no text found
