@@ -14,6 +14,7 @@
 		5E1BFF372AFBB85D00B45E56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E1BFF362AFBB85D00B45E56 /* Assets.xcassets */; };
 		5E1BFF3A2AFBB85D00B45E56 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E1BFF382AFBB85D00B45E56 /* LaunchScreen.storyboard */; };
 		5E1F6FCB2B03852200CFBAE3 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1F6FCA2B03852200CFBAE3 /* TableViewController.swift */; };
+		5E4F919E2B0433ED00F9B915 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4F919D2B0433ED00F9B915 /* CustomTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		5E1BFF392AFBB85D00B45E56 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5E1BFF3B2AFBB85D00B45E56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E1F6FCA2B03852200CFBAE3 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		5E4F919D2B0433ED00F9B915 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				5E1BFF382AFBB85D00B45E56 /* LaunchScreen.storyboard */,
 				5E1BFF3B2AFBB85D00B45E56 /* Info.plist */,
 				5E1F6FCA2B03852200CFBAE3 /* TableViewController.swift */,
+				5E4F919D2B0433ED00F9B915 /* CustomTableViewCell.swift */,
 			);
 			path = Barcode_detection_test;
 			sourceTree = "<group>";
@@ -142,6 +145,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E1BFF322AFBB85900B45E56 /* ViewController.swift in Sources */,
+				5E4F919E2B0433ED00F9B915 /* CustomTableViewCell.swift in Sources */,
 				5E1BFF2E2AFBB85900B45E56 /* AppDelegate.swift in Sources */,
 				5E1BFF302AFBB85900B45E56 /* SceneDelegate.swift in Sources */,
 				5E1F6FCB2B03852200CFBAE3 /* TableViewController.swift in Sources */,
