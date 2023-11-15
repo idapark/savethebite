@@ -18,6 +18,7 @@ if let url = URL(string: "https://world.openfoodfacts.net/api/v2/product/3017624
             return
         }
         
+        
         guard let data = data else {
             print("No data returned")
             return
