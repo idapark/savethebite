@@ -76,9 +76,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="fpv-qg-WjN">
-                                <rect key="frame" x="0.0" y="406" width="393" height="136"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter barcode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHt-VU-1ta">
+                                <rect key="frame" x="142" y="254.00000000000003" width="109" height="20.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter expiration date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r0r-us-cpu">
+                                <rect key="frame" x="117" y="405.33333333333331" width="159" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vXN-pI-icm">
+                                <rect key="frame" x="121" y="299.33333333333331" width="151" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="continue"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kxn-dE-OSQ">
+                                <rect key="frame" x="142" y="575" width="109" height="34.333333333333371"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Done"/>
+                            </button>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="fpv-qg-WjN">
+                                <rect key="frame" x="107" y="451.33333333333331" width="179" height="76.666666666666686"/>
                                 <date key="minimumDate" timeIntervalSinceReferenceDate="-978267600">
                                     <!--1970-01-01 11:00:00 +0000-->
                                 </date>
@@ -86,39 +107,53 @@
                                     <!--2037-12-31 11:00:00 +0000-->
                                 </date>
                             </datePicker>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Enter barcode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHt-VU-1ta">
-                                <rect key="frame" x="142" y="254" width="108" height="21"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name of the product" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5h7-rm-SlP">
+                                <rect key="frame" x="35" y="144" width="158" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Enter expiration date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r0r-us-cpu">
-                                <rect key="frame" x="117" y="406" width="158" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vXN-pI-icm">
-                                <rect key="frame" x="121" y="300" width="150" height="34"/>
+                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cxT-t7-2NV">
+                                <rect key="frame" x="66" y="173" width="97" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="continue"/>
+                                <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kxn-dE-OSQ">
-                                <rect key="frame" x="142" y="575" width="107" height="61"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e4z-vz-Ere">
+                                <rect key="frame" x="231" y="173" width="117" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Done"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Take picture"/>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ld5-a4-QLk"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="zHt-VU-1ta" firstAttribute="leading" secondItem="Kxn-dE-OSQ" secondAttribute="leading" id="31a-LG-fQz"/>
+                            <constraint firstItem="zHt-VU-1ta" firstAttribute="centerX" secondItem="vXN-pI-icm" secondAttribute="centerX" id="5RH-cM-Ehb"/>
+                            <constraint firstItem="ld5-a4-QLk" firstAttribute="bottom" secondItem="Kxn-dE-OSQ" secondAttribute="bottom" constant="208.66666666666663" id="Aaj-3A-8ct"/>
+                            <constraint firstItem="zHt-VU-1ta" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="142" id="IJO-fS-l1W"/>
+                            <constraint firstItem="vXN-pI-icm" firstAttribute="centerX" secondItem="r0r-us-cpu" secondAttribute="centerX" id="NL3-DA-a3k"/>
+                            <constraint firstItem="vXN-pI-icm" firstAttribute="top" secondItem="zHt-VU-1ta" secondAttribute="bottom" constant="25" id="Qdm-z0-H5Q"/>
+                            <constraint firstItem="r0r-us-cpu" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="117" id="WUm-Jf-JGZ"/>
+                            <constraint firstItem="r0r-us-cpu" firstAttribute="centerX" secondItem="fpv-qg-WjN" secondAttribute="centerX" id="Z1g-od-vVR"/>
+                            <constraint firstItem="fpv-qg-WjN" firstAttribute="top" secondItem="r0r-us-cpu" secondAttribute="bottom" constant="25" id="dmv-I0-B0e"/>
+                            <constraint firstItem="r0r-us-cpu" firstAttribute="centerX" secondItem="Kxn-dE-OSQ" secondAttribute="centerX" id="e8b-yB-haM"/>
+                            <constraint firstItem="r0r-us-cpu" firstAttribute="top" secondItem="vXN-pI-icm" secondAttribute="bottom" constant="72" id="fiM-wV-AvS"/>
+                            <constraint firstItem="zHt-VU-1ta" firstAttribute="centerX" secondItem="ZUQ-HA-26M" secondAttribute="centerX" id="jEC-JQ-mVK"/>
+                            <constraint firstItem="vXN-pI-icm" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="121" id="mSh-HP-KEm"/>
+                            <constraint firstItem="zHt-VU-1ta" firstAttribute="top" secondItem="ld5-a4-QLk" secondAttribute="top" constant="151" id="rMH-lG-ZaM"/>
+                            <constraint firstItem="fpv-qg-WjN" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="107" id="vOS-hg-F8A"/>
+                            <constraint firstItem="Kxn-dE-OSQ" firstAttribute="top" secondItem="fpv-qg-WjN" secondAttribute="bottom" constant="47" id="vSc-ev-yQm"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="K2s-SO-LIL"/>
                     <connections>
                         <outlet property="barcodeTextFieldFill" destination="vXN-pI-icm" id="6xF-wA-n7u"/>
+                        <outlet property="hiddenNameLabel" destination="5h7-rm-SlP" id="2fT-o7-zZs"/>
+                        <outlet property="hiddenTakePictureButton" destination="e4z-vz-Ere" id="Hta-WF-J9p"/>
+                        <outlet property="hiddenTextField" destination="cxT-t7-2NV" id="I01-7r-Hat"/>
                         <outlet property="manualDatePickerFill" destination="fpv-qg-WjN" id="3iV-MD-wpx"/>
                         <outlet property="manualDoneButton" destination="Kxn-dE-OSQ" id="qvp-1Q-vL3"/>
                     </connections>
