@@ -18,6 +18,10 @@ class PickManuallyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         manualDoneButton.addTarget(self, action: #selector(manualDoneButtonTapped), for: .touchUpInside)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+           view.addGestureRecognizer(tapGesture)
+        addDoneButtonOnKeyboard()
     }
 
     @objc func manualDoneButtonTapped() {
@@ -42,5 +46,25 @@ class PickManuallyViewController: UIViewController {
             }
         }
     }
+    
+    func addDoneButtonOnKeyboard() {
+            let doneToolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+            doneToolbar.barStyle = .default
+
+            let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            let done: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
+
+            let items = [flexSpace, done]
+            doneToolbar.items = items
+            doneToolbar.sizeToFit()
+
+            barcodeTextFieldFill.inputAccessoryView = doneToolbar
+        }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+
 
 }
+
