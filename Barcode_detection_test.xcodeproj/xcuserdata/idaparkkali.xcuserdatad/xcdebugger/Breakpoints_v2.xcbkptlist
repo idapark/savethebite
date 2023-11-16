@@ -46,8 +46,8 @@
             filePath = "Barcode_detection_test/Controls/TableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
             landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
             landmarkType = "7">
             <Locations>
@@ -80,6 +80,70 @@
                   startingLineNumber = "99"
                   endingLineNumber = "99"
                   offsetFromSymbolStart = "200">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F2E339B8-DFCC-4F34-9943-5F3E9F500C5B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Barcode_detection_test/Controls/TableViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "rightBarButtonTapped()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AD23C427-AA40-4645-B84B-FF3192BD9248"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Barcode_detection_test/Controls/TableViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "rightBarButtonTapped()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AD23C427-AA40-4645-B84B-FF3192BD9248 - fa4767f59d41dc78"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Barcode_detection_test.TableViewController.rightBarButtonTapped() -&gt; ()"
+                  moduleName = "Barcode_detection_test"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/idaparkkali/Documents/Development/Barcode_detection_test/Barcode_detection_test/Controls/TableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "372">
+               </Location>
+               <Location
+                  uuid = "AD23C427-AA40-4645-B84B-FF3192BD9248 - 851ff06c38620abd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (__C.UIAlertAction) -&gt; () in Barcode_detection_test.TableViewController.rightBarButtonTapped() -&gt; ()"
+                  moduleName = "Barcode_detection_test"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/idaparkkali/Documents/Development/Barcode_detection_test/Barcode_detection_test/Controls/TableViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "24">
                </Location>
             </Locations>
          </BreakpointContent>

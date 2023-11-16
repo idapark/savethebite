@@ -65,9 +65,8 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             print("Add using camera pressed")
             self?.presentCamera()
         }))
-        alertController.addAction(UIAlertAction(title: "Add manually", style: .default, handler: { (action) in
-            // Handle Option 2
-            print("Add manually pressed")
+        alertController.addAction(UIAlertAction(title: "Add manually", style: .default, handler: { [weak self] (action) in
+            self?.performSegue(withIdentifier: "MainToPickManually", sender: self)
         }))
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
@@ -104,6 +103,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                 // Now you can use 'self' here to refer to your TableViewController instance
                 // For example, updating a property or calling a method on 'self'
                 print("The detected text: \(detectedText)")
+                
             }
         }
     }

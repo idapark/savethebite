@@ -18,6 +18,8 @@
 		5EABD2F42B051E4A005C1B47 /* ItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EABD2F32B051E4A005C1B47 /* ItemManager.swift */; };
 		5EABD2F62B0520B1005C1B47 /* DetectTextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EABD2F52B0520B1005C1B47 /* DetectTextManager.swift */; };
 		5EABD2F82B0589D0005C1B47 /* DetectBarcodeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EABD2F72B0589D0005C1B47 /* DetectBarcodeManager.swift */; };
+		5EABD2FA2B062918005C1B47 /* PickManuallyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EABD2F92B062918005C1B47 /* PickManuallyViewController.swift */; };
+		5EABD2FC2B062EA1005C1B47 /* ProductFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EABD2FB2B062EA1005C1B47 /* ProductFetcher.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +37,8 @@
 		5EABD2F32B051E4A005C1B47 /* ItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemManager.swift; sourceTree = "<group>"; };
 		5EABD2F52B0520B1005C1B47 /* DetectTextManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectTextManager.swift; sourceTree = "<group>"; };
 		5EABD2F72B0589D0005C1B47 /* DetectBarcodeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectBarcodeManager.swift; sourceTree = "<group>"; };
+		5EABD2F92B062918005C1B47 /* PickManuallyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickManuallyViewController.swift; sourceTree = "<group>"; };
+		5EABD2FB2B062EA1005C1B47 /* ProductFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFetcher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,7 @@
 				5EABD2F32B051E4A005C1B47 /* ItemManager.swift */,
 				5EABD2F52B0520B1005C1B47 /* DetectTextManager.swift */,
 				5EABD2F72B0589D0005C1B47 /* DetectBarcodeManager.swift */,
+				5EABD2FB2B062EA1005C1B47 /* ProductFetcher.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -104,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				5E1F6FCA2B03852200CFBAE3 /* TableViewController.swift */,
+				5EABD2F92B062918005C1B47 /* PickManuallyViewController.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -181,8 +187,10 @@
 			files = (
 				5E1BFF322AFBB85900B45E56 /* ViewController.swift in Sources */,
 				5EABD2F82B0589D0005C1B47 /* DetectBarcodeManager.swift in Sources */,
+				5EABD2FA2B062918005C1B47 /* PickManuallyViewController.swift in Sources */,
 				5EABD2F62B0520B1005C1B47 /* DetectTextManager.swift in Sources */,
 				5E4F919E2B0433ED00F9B915 /* CustomTableViewCell.swift in Sources */,
+				5EABD2FC2B062EA1005C1B47 /* ProductFetcher.swift in Sources */,
 				5E1BFF2E2AFBB85900B45E56 /* AppDelegate.swift in Sources */,
 				5E1BFF302AFBB85900B45E56 /* SceneDelegate.swift in Sources */,
 				5EABD2F42B051E4A005C1B47 /* ItemManager.swift in Sources */,
