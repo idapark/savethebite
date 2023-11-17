@@ -123,23 +123,22 @@ class PickManuallyViewController: UIViewController {
     }
     
     func showImageAlert(name: String, picture: UIImage) {
-        // Add extra lines in the message for spacing
-        let message = name + "\n\n\n\n\n\n"
+        // Add extra newlines to create space for the image
+        let message = name + "\n\n\n\n\n\n\n\n\n\n\n" // Increase or decrease the number of '\n' as needed
         let alert = UIAlertController(title: "Is this the product you scanned?", message: message, preferredStyle: .alert)
 
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 250, height: 100))
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.image = picture
 
         alert.view.addSubview(imageView)
 
-        // Adjust the image view constraints or frame
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: alert.view.centerXAnchor),
-            imageView.topAnchor.constraint(equalTo: alert.view.topAnchor, constant: 80), // Adjust this constant as needed
-            imageView.widthAnchor.constraint(equalToConstant: 250),
-            imageView.heightAnchor.constraint(equalToConstant: 100)
+            imageView.topAnchor.constraint(equalTo: alert.view.topAnchor, constant: 125), // Adjust this constant based on the space needed
+            imageView.widthAnchor.constraint(equalToConstant: 250), // Adjust size as needed
+            imageView.heightAnchor.constraint(equalToConstant: 150) // Adjust size as needed
         ])
 
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -147,6 +146,8 @@ class PickManuallyViewController: UIViewController {
 
         present(alert, animated: true, completion: nil)
     }
+
+
 
 
 
