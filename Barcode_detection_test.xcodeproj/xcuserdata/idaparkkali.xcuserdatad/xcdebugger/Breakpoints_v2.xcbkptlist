@@ -238,8 +238,8 @@
             filePath = "Barcode_detection_test/Controls/PickManuallyViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
             landmarkName = "showImageAlert(name:picture:date1:)"
             landmarkType = "7">
             <Locations>

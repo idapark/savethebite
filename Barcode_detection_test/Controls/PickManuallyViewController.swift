@@ -150,7 +150,12 @@ class PickManuallyViewController: UIViewController {
     
     func showImageAlert(name: String, picture: UIImage, date1: Date) {
         // Add extra newlines to create space for the image
-        let message = name + "\n" + date1.description + "\n\n\n\n\n\n\n\n\n\n" // Increase or decrease the number of '\n' as needed
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy" // Custom format for date
+
+        let formattedDate = dateFormatter.string(from: date1)
+
+        let message = "\(name)\n\(formattedDate)\n\n\n\n\n\n\n\n\n\n" // Using the formatted date
         let alert = UIAlertController(title: "Is this the product you scanned?", message: message, preferredStyle: .alert)
 
         let imageView = UIImageView()
