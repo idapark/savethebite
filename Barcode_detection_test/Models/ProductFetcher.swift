@@ -14,7 +14,7 @@ struct ProductData: Codable {
 
 struct Product: Codable {
     let product_name: String
-    let image_front_url: String
+    let image_front_url: String?
 }
 
 class ProductFetcher {

@@ -34,7 +34,6 @@ class PickManuallyViewController: UIViewController {
 
     @objc func manualDoneButtonTapped() {
         guard let barcode = barcodeTextFieldFill.text, !barcode.isEmpty else {
-            // Handle empty barcode field
             print("Barcode field is empty")
             return
         }
@@ -43,20 +42,22 @@ class PickManuallyViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let product):
-                    print("Product Name: \(product.product_name)")
-                    print("Image URL: \(product.image_front_url)")
-                    // Here you can handle adding the product to your inventory or UI
-                    if let url = URL(string: product.image_front_url) {
+                    //print("Product Name: \(product.product_name)")
+                    //print("Image URL: \(product.image_front_url)")
+
+                    // Check if the image URL string is not empty
+                    if let urlString = product.image_front_url, !urlString.isEmpty, let url = URL(string: urlString) {
                         self?.loadImage(from: url) { image in
                             if let image = image {
-                                // Use your UIImage here
                                 self?.showImageAlert(name: product.product_name, picture: image)
                             } else {
                                 print("Error loading image")
                             }
                         }
+                    } else {
+                        // Image URL is empty
+                        self?.showNoImageAlert(productName: product.product_name)
                     }
-                
 
                 case .failure(let error):
                     print("Error fetching product: \(error)")
@@ -65,6 +66,8 @@ class PickManuallyViewController: UIViewController {
             }
         }
     }
+
+
     
     func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
         DispatchQueue.global().async {
@@ -122,6 +125,21 @@ class PickManuallyViewController: UIViewController {
         
     }
     
+    func showNoImageAlert(productName: String) {
+        let alert = UIAlertController(title: "Image Not Available", message: "The image for \(productName) is not available. Would you like to add the product without an image?", preferredStyle: .alert)
+
+        let yesAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
+            // Handle the addition of the product without an image
+        }
+
+        let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func showImageAlert(name: String, picture: UIImage) {
         // Add extra newlines to create space for the image
         let message = name + "\n\n\n\n\n\n\n\n\n\n\n" // Increase or decrease the number of '\n' as needed
@@ -146,10 +164,6 @@ class PickManuallyViewController: UIViewController {
 
         present(alert, animated: true, completion: nil)
     }
-
-
-
-
 
     
     @objc func dismissKeyboard() {
