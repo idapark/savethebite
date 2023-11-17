@@ -34,6 +34,7 @@ class ItemManager {
             items[dateKey] = []
         }
         items[dateKey]?.append(item)
+        print("Item added: \(item.title), Date: \(dateKey)")
     }
 
     // Add other data management methods as needed

@@ -22,6 +22,18 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Item", style: .plain, target: self, action: #selector(rightBarButtonTapped))
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "MainToPickManually",
+           let destinationVC = segue.destination as? PickManuallyViewController {
+            destinationVC.delegate = self
+        }
+    }
+    
     
     
     // MARK: - Table view data source
@@ -106,6 +118,17 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                 
             }
         }
+    }
+}
+
+protocol PickManuallyViewControllerDelegate: AnyObject {
+    func didAddNewItem(_ item: Item)
+}
+
+extension TableViewController: PickManuallyViewControllerDelegate {
+    func didAddNewItem(_ item: Item) {
+        itemManager.addItem(item)
+        tableView.reloadData()
     }
 }
 

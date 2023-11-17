@@ -9,6 +9,8 @@ import UIKit
 
 class PickManuallyViewController: UIViewController {
     
+    weak var delegate: PickManuallyViewControllerDelegate?
+    
     @IBOutlet weak var barcodeTextFieldFill: UITextField!
     @IBOutlet weak var manualDatePickerFill: UIDatePicker!
     @IBOutlet weak var manualDoneButton: UIButton!
@@ -37,6 +39,8 @@ class PickManuallyViewController: UIViewController {
             print("Barcode field is empty")
             return
         }
+        
+        let selectedDate = manualDatePickerFill.date
 
         productFetcher.fetchProduct(barcode: barcode) { [weak self] result in
             DispatchQueue.main.async {
@@ -49,7 +53,7 @@ class PickManuallyViewController: UIViewController {
                     if let urlString = product.image_front_url, !urlString.isEmpty, let url = URL(string: urlString) {
                         self?.loadImage(from: url) { image in
                             if let image = image {
-                                self?.showImageAlert(name: product.product_name, picture: image)
+                                self?.showImageAlert(name: product.product_name, picture: image, date1: selectedDate)
                             } else {
                                 print("Error loading image")
                             }
@@ -98,6 +102,8 @@ class PickManuallyViewController: UIViewController {
             barcodeTextFieldFill.inputAccessoryView = doneToolbar
         }
     
+    // MARK: - Different alerts
+    
     func showAlert() {
         let alert = UIAlertController(title: "Error", message: "Failed to fetch product details.", preferredStyle: .alert)
 
@@ -129,7 +135,9 @@ class PickManuallyViewController: UIViewController {
         let alert = UIAlertController(title: "Image Not Available", message: "The image for \(productName) is not available. Would you like to add the product without an image?", preferredStyle: .alert)
 
         let yesAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
-            // Handle the addition of the product without an image
+            let newItem = Item(title: productName, image: nil, date: Date())
+            self?.delegate?.didAddNewItem(newItem)
+            self?.navigationController?.popViewController(animated: true)
         }
 
         let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
@@ -140,9 +148,9 @@ class PickManuallyViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func showImageAlert(name: String, picture: UIImage) {
+    func showImageAlert(name: String, picture: UIImage, date1: Date) {
         // Add extra newlines to create space for the image
-        let message = name + "\n\n\n\n\n\n\n\n\n\n\n" // Increase or decrease the number of '\n' as needed
+        let message = name + "\n" + date1.description + "\n\n\n\n\n\n\n\n\n\n" // Increase or decrease the number of '\n' as needed
         let alert = UIAlertController(title: "Is this the product you scanned?", message: message, preferredStyle: .alert)
 
         let imageView = UIImageView()
@@ -159,10 +167,14 @@ class PickManuallyViewController: UIViewController {
             imageView.heightAnchor.constraint(equalToConstant: 150) // Adjust size as needed
         ])
 
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(okAction)
+        let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+                let newItem = Item(title: name, image: picture, date: date1)
+                self?.delegate?.didAddNewItem(newItem)
+                self?.navigationController?.popViewController(animated: true)
+            }
+            alert.addAction(okAction)
 
-        present(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
     }
 
     

@@ -46,8 +46,8 @@
             filePath = "Barcode_detection_test/Controls/TableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
             landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
             landmarkType = "7">
             <Locations>
@@ -94,8 +94,8 @@
             filePath = "Barcode_detection_test/Controls/TableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "rightBarButtonTapped()"
             landmarkType = "7">
          </BreakpointContent>
@@ -110,8 +110,8 @@
             filePath = "Barcode_detection_test/Controls/TableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
             landmarkName = "rightBarButtonTapped()"
             landmarkType = "7">
             <Locations>
@@ -158,10 +158,122 @@
             filePath = "Barcode_detection_test/Controls/PickManuallyViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
             landmarkName = "PickManuallyViewController"
             landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8C58CC9E-16B2-4612-BBE9-D98B070FF6F1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Barcode_detection_test/Controls/PickManuallyViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "manualDoneButtonTapped()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "8C58CC9E-16B2-4612-BBE9-D98B070FF6F1 - e8406406f3ff6280"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 (Swift.Result&lt;Barcode_detection_test.Product, Swift.Error&gt;) -&gt; () in Barcode_detection_test.PickManuallyViewController.manualDoneButtonTapped() -&gt; ()"
+                  moduleName = "Barcode_detection_test"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/idaparkkali/Documents/Development/Barcode_detection_test/Barcode_detection_test/Controls/PickManuallyViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "468">
+               </Location>
+               <Location
+                  uuid = "8C58CC9E-16B2-4612-BBE9-D98B070FF6F1 - e8406406f3ff6280"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in closure #1 (Swift.Result&lt;Barcode_detection_test.Product, Swift.Error&gt;) -&gt; () in Barcode_detection_test.PickManuallyViewController.manualDoneButtonTapped() -&gt; ()"
+                  moduleName = "Barcode_detection_test"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/idaparkkali/Documents/Development/Barcode_detection_test/Barcode_detection_test/Controls/PickManuallyViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "540">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "26F8CDEA-0238-4A17-BE1C-CF48263F71A2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Barcode_detection_test/Controls/PickManuallyViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "manualDoneButtonTapped()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "213B1A45-23B3-49C7-B750-5B159E437270"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Barcode_detection_test/Controls/PickManuallyViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "showImageAlert(name:picture:date1:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "213B1A45-23B3-49C7-B750-5B159E437270 - 8f07734f6a788f1d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Barcode_detection_test.PickManuallyViewController.showImageAlert(name: Swift.String, picture: __C.UIImage, date1: Foundation.Date) -&gt; ()"
+                  moduleName = "Barcode_detection_test"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/idaparkkali/Documents/Development/Barcode_detection_test/Barcode_detection_test/Controls/PickManuallyViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "170"
+                  endingLineNumber = "170"
+                  offsetFromSymbolStart = "2356">
+               </Location>
+               <Location
+                  uuid = "213B1A45-23B3-49C7-B750-5B159E437270 - a9411a4be8985023"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.UIAlertAction) -&gt; () in Barcode_detection_test.PickManuallyViewController.showImageAlert(name: Swift.String, picture: __C.UIImage, date1: Foundation.Date) -&gt; ()"
+                  moduleName = "Barcode_detection_test"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/idaparkkali/Documents/Development/Barcode_detection_test/Barcode_detection_test/Controls/PickManuallyViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "170"
+                  endingLineNumber = "170"
+                  offsetFromSymbolStart = "276">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
