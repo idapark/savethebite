@@ -20,6 +20,8 @@ class PickManuallyViewController: UIViewController, UIImagePickerControllerDeleg
     
     @IBOutlet weak var hiddenTakePictureButton: UIButton!
     
+    var cameraCompletionHandler: ((UIImage?) -> Void)?
+    
     let imagePicker = UIImagePickerController()
     let productFetcher = ProductFetcher()
 
@@ -132,15 +134,26 @@ class PickManuallyViewController: UIViewController, UIImagePickerControllerDeleg
     }
     
     func showNoImageAlert(productName: String) {
+        
+        let selectedDate = manualDatePickerFill.date
+        
         let alert = UIAlertController(title: "Image Not Available", message: "The image for \(productName) is not available.", preferredStyle: .alert)
 
         let takePictureAction = UIAlertAction(title: "Take a Picture", style: .default) { [weak self] _ in
             // Code to initiate taking a picture
-            self?.presentCamera()
+            self?.presentCamera { image in
+                if let image = image {
+                    let newItem = Item(title: productName, image: image, date: selectedDate)
+                    self?.delegate?.didAddNewItem(newItem)
+                    self?.navigationController?.popViewController(animated: true)
+                } else {
+                    // Handle the case where no image was taken
+                }
+            }
         }
 
         let addWithoutPictureAction = UIAlertAction(title: "Add without Picture", style: .default) { [weak self] _ in
-            let newItem = Item(title: productName, image: nil, date: Date())
+            let newItem = Item(title: productName, image: nil, date: selectedDate)
             self?.delegate?.didAddNewItem(newItem)
             self?.navigationController?.popViewController(animated: true)
         }
@@ -154,16 +167,29 @@ class PickManuallyViewController: UIViewController, UIImagePickerControllerDeleg
         self.present(alert, animated: true, completion: nil)
     }
     
-    func presentCamera() {
+    
+    func presentCamera(completion: @escaping (UIImage?) -> Void) {
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
-            // Handle camera not available scenario
-            print("The camera was not available")
+            print("Camera is not available")
+            completion(nil)
             return
         }
         imagePicker.delegate = self
         imagePicker.sourceType = .camera
         imagePicker.allowsEditing = false
+        self.cameraCompletionHandler = completion // Save the completion handler
         present(imagePicker, animated: true)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        let image = info[.originalImage] as? UIImage
+        cameraCompletionHandler?(image)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+        cameraCompletionHandler?(nil)
     }
     
     
@@ -213,4 +239,5 @@ class PickManuallyViewController: UIViewController, UIImagePickerControllerDeleg
 
 
 }
+
 

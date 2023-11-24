@@ -64,6 +64,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             cell.customCellLabel.text = item.title
             cell.customCellPicture.image = item.image
         }
+        print("cellForRowAt: cell is being configured with the correct item and that the item has an image")
         
         return cell
     }
