@@ -38,23 +38,27 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         let spacing: CGFloat = 20
 
         // Setup and add the barcode button
-        barcodeButton.setTitle("Scan Barcode", for: .normal)
+        barcodeButton.setTitle("Scan\nBarcode", for: .normal)
+        barcodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        barcodeButton.titleLabel?.textAlignment = .center       // Center the text
+        barcodeButton.titleLabel?.numberOfLines = 0
         barcodeButton.addTarget(self, action: #selector(barcodeButtonTapped), for: .touchUpInside)
         barcodeButton.frame = CGRect(x: 20, y: spacing, width: buttonWidth, height: buttonHeight)
         barcodeButton.layer.borderWidth = 2.0
         barcodeButton.layer.cornerRadius = 8
         barcodeButton.layer.borderColor = UIColor.label.cgColor
-        //barcodeButton.backgroundColor = .white // Example color for the barcode button
         view.addSubview(barcodeButton)
 
         // Setup and add the expiration date button
-        expirationDateButton.setTitle("Scan Expiration Date", for: .normal)
+        expirationDateButton.setTitle("Scan\nExpiration Date", for: .normal)
+        expirationDateButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        expirationDateButton.titleLabel?.textAlignment = .center       // Center the text
+        expirationDateButton.titleLabel?.numberOfLines = 0
         expirationDateButton.addTarget(self, action: #selector(expirationDateButtonTapped), for: .touchUpInside)
         expirationDateButton.frame = CGRect(x: 20, y: barcodeButton.frame.maxY + spacing, width: buttonWidth, height: buttonHeight)
         expirationDateButton.layer.borderWidth = 2.0
         expirationDateButton.layer.cornerRadius = 8
         expirationDateButton.layer.borderColor = UIColor.label.cgColor
-        //expirationDateButton.backgroundColor = .white // Example color for the expiration date button
         view.addSubview(expirationDateButton)
 
         // Setup and add the done button
@@ -64,27 +68,22 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         doneButton.layer.borderWidth = 2.0
         doneButton.layer.cornerRadius = 8
         doneButton.layer.borderColor = UIColor.label.cgColor
-        //doneButton.backgroundColor = .white // Example color for the done button
         view.addSubview(doneButton)
         
         // Configure the barcode result label
         barcodeResultLabel.translatesAutoresizingMaskIntoConstraints = false
-        barcodeResultLabel.text = "Barcode Result"
-        // Customize the label (font, color, etc.) as needed
+        barcodeResultLabel.textAlignment = .center
         barcodeResultLabel.layer.borderWidth = 2.0
         barcodeResultLabel.layer.cornerRadius = 8
         barcodeResultLabel.layer.borderColor = UIColor.label.cgColor
-        //barcodeResultLabel.backgroundColor = .white // Example color for the barcode result label
         view.addSubview(barcodeResultLabel)
 
         // Configure the expiration date result label
         expirationDateResultLabel.translatesAutoresizingMaskIntoConstraints = false
-        expirationDateResultLabel.text = "Expiration Date Result"
-        // Customize the label (font, color, etc.) as needed
+        expirationDateResultLabel.textAlignment = .center
         expirationDateResultLabel.layer.borderWidth = 2.0
         expirationDateResultLabel.layer.cornerRadius = 8
         expirationDateResultLabel.layer.borderColor = UIColor.label.cgColor
-        //expirationDateResultLabel.backgroundColor = .white
         view.addSubview(expirationDateResultLabel)
         
         // Setup Auto Layout constraints
