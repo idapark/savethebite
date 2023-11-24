@@ -8,11 +8,20 @@ import UIKit
 
 class CustomSheetViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    enum ScanMode {
+        case barcode
+        case expirationDate
+        case none
+    }
+    
+    var currentScanMode: ScanMode = .none
+    
     let barcodeButton = UIButton()
     let expirationDateButton = UIButton()
     let doneButton = UIButton()
     
-    let textDetectionUtility = DetectBarcodeManager()
+    let barcodeDetectionUtility = DetectBarcodeManager()
+    let textDetectionUtility = DetectTextManager()
     let imagePicker = UIImagePickerController()
 
     override func viewDidLoad() {
@@ -65,6 +74,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
     }
 
     @objc func barcodeButtonTapped() {
+        currentScanMode = .barcode
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
             print("Camera not available")
             return
@@ -80,8 +90,45 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         picker.dismiss(animated: true, completion: nil)
 
+        guard let image = info[.originalImage] as? UIImage, let ciImage = CIImage(image: image) else { return }
+
+        switch currentScanMode {
+        case .barcode:
+            barcodeDetectionUtility.detectBarcode(in: ciImage) { [weak self] detectedText in
+                // Handle barcode detection result
+                if let detectedText = detectedText {
+                    print("Detected barcode: \(detectedText)")
+                    // Handle the detected barcode text
+                } else {
+                    print("No barcode detected")
+                    // Handle the case where no barcode is detected
+                }
+            }
+        case .expirationDate:
+            textDetectionUtility.detectText(in: ciImage) { [weak self] detectedText in
+                // Handle text detection result
+                if let detectedText = detectedText {
+                    print("Detected text: \(detectedText)")
+                    // Handle the detected text (expiration date)
+                } else {
+                    print("No text detected")
+                    // Handle the case where no text is detected
+                }
+            }
+        case .none:
+            break
+        }
+
+        // Reset the scan mode
+        currentScanMode = .none
+    }
+    
+    /*
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        picker.dismiss(animated: true, completion: nil)
+
         if let image = info[.originalImage] as? UIImage, let ciImage = CIImage(image: image) {
-            textDetectionUtility.detectBarcode(in: ciImage) { [weak self] detectedText in
+            barcodeDetectionUtility.detectBarcode(in: ciImage) { [weak self] detectedText in
                 guard let self = self else { return }
                 if let detectedText = detectedText {
                     print("Detected barcode: \(detectedText)")
@@ -93,9 +140,11 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
             }
         }
     }
+     */
 
     @objc func expirationDateButtonTapped() {
         // Handle expiration date button tap
+        currentScanMode = .expirationDate
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
             print("Camera not available")
             return
@@ -107,6 +156,19 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
 
         present(imagePicker, animated: true)
     }
+    
+    /*
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        picker.dismiss(animated: true, completion: nil)
+
+        if let image = info[.originalImage] as? UIImage, let ciImage = CIImage(image: image) {
+            textDetectionUtility.detectText(in: ciImage) { [weak self] detectedText in
+                guard let self = self else { return }
+                
+            }
+        }
+    }
+     */
 
     @objc func doneButtonTapped() {
         // Handle done button tap
