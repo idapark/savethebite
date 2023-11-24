@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PickManuallyViewController: UIViewController {
+class PickManuallyViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     weak var delegate: PickManuallyViewControllerDelegate?
     
@@ -20,7 +20,7 @@ class PickManuallyViewController: UIViewController {
     
     @IBOutlet weak var hiddenTakePictureButton: UIButton!
     
-
+    let imagePicker = UIImagePickerController()
     let productFetcher = ProductFetcher()
 
     override func viewDidLoad() {
@@ -132,21 +132,40 @@ class PickManuallyViewController: UIViewController {
     }
     
     func showNoImageAlert(productName: String) {
-        let alert = UIAlertController(title: "Image Not Available", message: "The image for \(productName) is not available. Would you like to add the product without an image?", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Image Not Available", message: "The image for \(productName) is not available.", preferredStyle: .alert)
 
-        let yesAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
+        let takePictureAction = UIAlertAction(title: "Take a Picture", style: .default) { [weak self] _ in
+            // Code to initiate taking a picture
+            self?.presentCamera()
+        }
+
+        let addWithoutPictureAction = UIAlertAction(title: "Add without Picture", style: .default) { [weak self] _ in
             let newItem = Item(title: productName, image: nil, date: Date())
             self?.delegate?.didAddNewItem(newItem)
             self?.navigationController?.popViewController(animated: true)
         }
 
-        let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
-        alert.addAction(yesAction)
-        alert.addAction(noAction)
+        alert.addAction(takePictureAction)
+        alert.addAction(addWithoutPictureAction)
+        alert.addAction(cancelAction)
 
         self.present(alert, animated: true, completion: nil)
     }
+    
+    func presentCamera() {
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            // Handle camera not available scenario
+            print("The camera was not available")
+            return
+        }
+        imagePicker.delegate = self
+        imagePicker.sourceType = .camera
+        imagePicker.allowsEditing = false
+        present(imagePicker, animated: true)
+    }
+    
     
     func showImageAlert(name: String, picture: UIImage, date1: Date) {
         // Add extra newlines to create space for the image
