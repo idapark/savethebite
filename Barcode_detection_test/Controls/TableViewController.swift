@@ -13,8 +13,9 @@ import Vision
 class TableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var itemManager = ItemManager()
-    let imagePicker = UIImagePickerController()
-    let textDetectionUtility = DetectBarcodeManager()
+    // let imagePicker = UIImagePickerController()
+    // let textDetectionUtility = DetectBarcodeManager()
+    let sheetViewController = CustomSheetViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,6 +92,18 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     }
     
     func presentCamera() {
+        sheetViewController.modalPresentationStyle = .formSheet
+
+        if let sheetPresentationController = sheetViewController.sheetPresentationController {
+            sheetPresentationController.detents = [.medium()]  // Adjust this as needed
+            sheetPresentationController.prefersGrabberVisible = true
+        }
+
+        self.present(sheetViewController, animated: true, completion: nil)
+    }
+    
+    /*
+    func presentCamera() {
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
             // Handle camera not available scenario
             print("The camera was not available")
@@ -101,6 +114,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         imagePicker.allowsEditing = false
         present(imagePicker, animated: true)
     }
+    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         imagePicker.dismiss(animated: true, completion: nil)
@@ -120,6 +134,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             }
         }
     }
+     */
 }
 
 protocol PickManuallyViewControllerDelegate: AnyObject {
