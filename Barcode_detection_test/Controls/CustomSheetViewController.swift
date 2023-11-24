@@ -14,6 +14,18 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         case none
     }
     
+    var dateFormats: [String] {
+        return [
+            "dd MM yyyy", "d MM yyyy", "dd M yyyy", "d M yyyy",
+            "dd.MM.yyyy", "d.MM.yyyy", "dd.M.yyyy", "d.M.yyyy",
+            "dd-MM-yyyy", "d-MM-yyyy", "dd-M-yyyy", "d-M-yyyy",
+            "dd/MM/yyyy", "d/MM/yyyy", "dd/M/yyyy", "d/M/yyyy",
+            "MM/yyyy",
+            "dd.MM.", "ddMMyy", // Short formats without year
+            // Include other formats as needed
+        ]
+    }
+    
     var currentScanMode: ScanMode = .none
     
     let barcodeButton = UIButton()
@@ -25,6 +37,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
     let barcodeDetectionUtility = DetectBarcodeManager()
     let textDetectionUtility = DetectTextManager()
     let imagePicker = UIImagePickerController()
+    let productFetcher = ProductFetcher()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -206,9 +219,93 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         present(imagePicker, animated: true)
     }
     
-
+    /*
     @objc func doneButtonTapped() {
         // Handle done button tap
+        
         dismiss(animated: true, completion: nil)
     }
+     */
+    @objc func doneButtonTapped() {
+        guard let barcode = barcodeResultLabel.text, !barcode.isEmpty else {
+            print("Barcode is empty")
+            return
+        }
+
+        guard let expirationDateString = expirationDateResultLabel.text, !expirationDateString.isEmpty, let standardizedExpirationDate = standardizedDate(from: expirationDateString) else {
+            print("Expiration date is invalid or empty")
+            return
+        }
+        
+
+        productFetcher.fetchProduct(barcode: barcode) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let product):
+                    // Handle the success case
+                    // Optionally use expirationDate here as needed
+                    // ...
+                    print("Successfully got the product based on barcode and expiration date")
+                    print("Product Name: \(product.product_name)")
+                    print("Image URL: \(String(describing: product.image_front_url))")
+                    print("Expiration date of the product (standardized): \(standardizedExpirationDate)")
+
+                case .failure(let error):
+                    print("Error fetching product: \(error)")
+                    // Handle the error case
+                    // ...
+                }
+            }
+        }
+    }
+    
+    func standardizedDate(from dateString: String) -> String? {
+        let currentYear = Calendar.current.component(.year, from: Date())
+        let formatter = DateFormatter()
+
+        for format in dateFormats {
+            formatter.dateFormat = format
+            if let date = formatter.date(from: dateString) {
+                formatter.dateFormat = "dd.MM.yyyy"
+                return formatter.string(from: date)
+            }
+        }
+
+        // Try parsing short formats and add the current year
+        if let shortDate = tryParseShortDate(dateString, withYear: currentYear, formatter: formatter) {
+            return shortDate
+        }
+
+        return nil // Return nil if no format matched
+    }
+
+    func tryParseShortDate(_ dateString: String, withYear year: Int, formatter: DateFormatter) -> String? {
+        let shortFormats = ["dd.MM.", "ddMMyy", "MM/yyyy"] // Include "MM/yyyy"
+        let defaultDay = "01" // Default day to use when day is missing
+
+        for format in shortFormats {
+            formatter.dateFormat = format
+            if let date = formatter.date(from: dateString) {
+                if format == "MM/yyyy" {
+                    // For "MM/yyyy" format, prepend the default day
+                    formatter.dateFormat = "dd.MM.yyyy"
+                    return defaultDay + "." + formatter.string(from: date)
+                } else {
+                    // For other short formats, append the current year
+                    return formatter.string(from: date) + ".\(year)"
+                }
+            }
+        }
+
+        return nil
+    }
+}
+
+extension DateFormatter {
+    static let yourFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        // Set the date format according to how your date is being displayed
+        formatter.dateFormat = "dd/MM/yyyy" // Modify this as per your date format
+        return formatter
+    }()
 }
