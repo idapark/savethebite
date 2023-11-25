@@ -77,7 +77,15 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         
         alertController.addAction(UIAlertAction(title: "Add using camera", style: .default, handler: { [weak self] (action) in
             print("Add using camera pressed")
-            self?.presentCamera()
+            //self?.presentCamera()
+            let sheetViewController = CustomSheetViewController()
+            sheetViewController.delegate = self  // Set TableViewController as the delegate
+            sheetViewController.modalPresentationStyle = .formSheet
+            if let sheetPresentationController = sheetViewController.sheetPresentationController {
+                sheetPresentationController.detents = [.medium()]  // Adjust this as needed
+                sheetPresentationController.prefersGrabberVisible = true
+            }
+            self?.present(sheetViewController, animated: true, completion: nil)
         }))
         alertController.addAction(UIAlertAction(title: "Add manually", style: .default, handler: { [weak self] (action) in
             self?.performSegue(withIdentifier: "MainToPickManually", sender: self)
@@ -91,6 +99,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         self.present(alertController, animated: true, completion: nil)
     }
     
+    /*
     func presentCamera() {
         sheetViewController.modalPresentationStyle = .formSheet
 
@@ -101,6 +110,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
 
         self.present(sheetViewController, animated: true, completion: nil)
     }
+     */
     
     /*
     func presentCamera() {
@@ -141,12 +151,18 @@ protocol PickManuallyViewControllerDelegate: AnyObject {
     func didAddNewItem(_ item: Item)
 }
 
-extension TableViewController: PickManuallyViewControllerDelegate {
+protocol CustomSheetViewControllerDelegate: AnyObject {
+    func didAddNewItem(_ item: Item)
+}
+
+extension TableViewController: PickManuallyViewControllerDelegate, CustomSheetViewControllerDelegate {
     func didAddNewItem(_ item: Item) {
         itemManager.addItem(item)
         tableView.reloadData()
     }
 }
+
+
 
 
     

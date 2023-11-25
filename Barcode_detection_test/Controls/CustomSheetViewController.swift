@@ -14,6 +14,8 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         case none
     }
     
+    weak var delegate: CustomSheetViewControllerDelegate?
+    
     var dateFormats: [String] {
         return [
             "dd MM yyyy", "d MM yyyy", "dd M yyyy", "d M yyyy",
@@ -50,6 +52,8 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         let buttonHeight: CGFloat = 50
         let buttonWidth: CGFloat = view.bounds.width - 40  // Example width
         let spacing: CGFloat = 20
+        
+        view.backgroundColor = UIColor.systemBackground
 
         // Setup and add the barcode button
         barcodeButton.setTitle("Scan\nBarcode", for: .normal)
@@ -276,11 +280,28 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
                     // Handle the success case
                     // Optionally use expirationDate here as needed
                     // ...
-                    self?.feedbackLabel.isHidden = true
-                    print("Successfully got the product based on barcode and expiration date")
-                    print("Product Name: \(product.product_name)")
-                    print("Image URL: \(String(describing: product.image_front_url))")
-                    print("Expiration date of the product (standardized): \(standardizedExpirationDate)")
+                    if let urlString = product.image_front_url, !urlString.isEmpty, let url = URL(string: urlString) {
+                        self?.loadImage(from: url) { image in
+                            if let image = image {
+                                self?.feedbackLabel.isHidden = true
+                                print("Successfully got the product based on barcode and expiration date")
+                                print("Product Name: \(product.product_name)")
+                                print("Image URL: \(String(describing: product.image_front_url))")
+                                print("Expiration date of the product (standardized): \(standardizedExpirationDate)")
+                                self?.showImageAlert(name: product.product_name, picture: image, date1: standardizedExpirationDate)
+                                
+                            } else {
+                                print("Error loading image")
+                                self?.feedbackLabel.isHidden = false
+                                self?.feedbackLabel.text = "Error loading image"
+                            }
+                        }
+                    } else {
+                        // Image URL is empty
+                        self?.feedbackLabel.isHidden = false
+                        self?.feedbackLabel.text = "Error loading image"
+                        
+                    }
 
                 case .failure(let error):
                     print("Error fetching product: \(error)")
@@ -292,15 +313,63 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         }
     }
     
-    func standardizedDate(from dateString: String) -> String? {
+    func showImageAlert(name: String, picture: UIImage, date1: Date) {
+        // Add extra newlines to create space for the image
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy" // Custom format for date
+
+        let formattedDate = dateFormatter.string(from: date1)
+
+        let message = "\(name)\n\(formattedDate)\n\n\n\n\n\n\n\n\n\n" // Using the formatted date
+        let alert = UIAlertController(title: "Is this the product you scanned?", message: message, preferredStyle: .alert)
+
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = picture
+
+        alert.view.addSubview(imageView)
+
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: alert.view.centerXAnchor),
+            imageView.topAnchor.constraint(equalTo: alert.view.topAnchor, constant: 125), // Adjust this constant based on the space needed
+            imageView.widthAnchor.constraint(equalToConstant: 250), // Adjust size as needed
+            imageView.heightAnchor.constraint(equalToConstant: 150) // Adjust size as needed
+        ])
+
+        let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+                let newItem = Item(title: name, image: picture, date: date1)
+                self?.delegate?.didAddNewItem(newItem)
+                self?.navigationController?.popViewController(animated: true)
+            }
+            alert.addAction(okAction)
+
+            present(alert, animated: true, completion: nil)
+    }
+    
+    func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
+        DispatchQueue.global().async {
+            if let data = try? Data(contentsOf: url) {
+                let image = UIImage(data: data)
+                DispatchQueue.main.async {
+                    completion(image)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+            }
+        }
+    }
+    
+    func standardizedDate(from dateString: String) -> Date? {
         let currentYear = Calendar.current.component(.year, from: Date())
         let formatter = DateFormatter()
 
         for format in dateFormats {
             formatter.dateFormat = format
             if let date = formatter.date(from: dateString) {
-                formatter.dateFormat = "dd.MM.yyyy"
-                return formatter.string(from: date)
+                return date
             }
         }
 
@@ -312,7 +381,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         return nil // Return nil if no format matched
     }
 
-    func tryParseShortDate(_ dateString: String, withYear year: Int, formatter: DateFormatter) -> String? {
+    func tryParseShortDate(_ dateString: String, withYear year: Int, formatter: DateFormatter) -> Date? {
         let shortFormats = ["dd.MM.", "ddMMyy", "MM/yyyy"] // Include "MM/yyyy"
         let defaultDay = "01" // Default day to use when day is missing
 
@@ -322,10 +391,13 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
                 if format == "MM/yyyy" {
                     // For "MM/yyyy" format, prepend the default day
                     formatter.dateFormat = "dd.MM.yyyy"
-                    return defaultDay + "." + formatter.string(from: date)
+                    let newDateString = defaultDay + "." + formatter.string(from: date)
+                    return formatter.date(from: newDateString)
                 } else {
                     // For other short formats, append the current year
-                    return formatter.string(from: date) + ".\(year)"
+                    let newDateString = formatter.string(from: date) + ".\(year)"
+                    formatter.dateFormat = "dd.MM.yyyy"
+                    return formatter.date(from: newDateString)
                 }
             }
         }
