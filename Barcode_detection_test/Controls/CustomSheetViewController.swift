@@ -33,6 +33,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
     let doneButton = UIButton()
     let barcodeResultLabel = UILabel()
     let expirationDateResultLabel = UILabel()
+    let feedbackLabel = UILabel()
     
     let barcodeDetectionUtility = DetectBarcodeManager()
     let textDetectionUtility = DetectTextManager()
@@ -55,6 +56,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         barcodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         barcodeButton.titleLabel?.textAlignment = .center       // Center the text
         barcodeButton.titleLabel?.numberOfLines = 0
+        barcodeButton.setTitleColor(UIColor.label, for: .normal)
         barcodeButton.addTarget(self, action: #selector(barcodeButtonTapped), for: .touchUpInside)
         barcodeButton.frame = CGRect(x: 20, y: spacing, width: buttonWidth, height: buttonHeight)
         barcodeButton.layer.borderWidth = 2.0
@@ -67,6 +69,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         expirationDateButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         expirationDateButton.titleLabel?.textAlignment = .center       // Center the text
         expirationDateButton.titleLabel?.numberOfLines = 0
+        expirationDateButton.setTitleColor(UIColor.label, for: .normal)
         expirationDateButton.addTarget(self, action: #selector(expirationDateButtonTapped), for: .touchUpInside)
         expirationDateButton.frame = CGRect(x: 20, y: barcodeButton.frame.maxY + spacing, width: buttonWidth, height: buttonHeight)
         expirationDateButton.layer.borderWidth = 2.0
@@ -78,6 +81,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         doneButton.setTitle("Done", for: .normal)
         doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         doneButton.frame = CGRect(x: 20, y: expirationDateButton.frame.maxY + spacing, width: buttonWidth, height: buttonHeight)
+        doneButton.setTitleColor(UIColor.label, for: .normal)
         doneButton.layer.borderWidth = 2.0
         doneButton.layer.cornerRadius = 8
         doneButton.layer.borderColor = UIColor.label.cgColor
@@ -86,6 +90,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         // Configure the barcode result label
         barcodeResultLabel.translatesAutoresizingMaskIntoConstraints = false
         barcodeResultLabel.textAlignment = .center
+        barcodeResultLabel.textColor = UIColor.label
         barcodeResultLabel.layer.borderWidth = 2.0
         barcodeResultLabel.layer.cornerRadius = 8
         barcodeResultLabel.layer.borderColor = UIColor.label.cgColor
@@ -94,10 +99,18 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         // Configure the expiration date result label
         expirationDateResultLabel.translatesAutoresizingMaskIntoConstraints = false
         expirationDateResultLabel.textAlignment = .center
+        expirationDateResultLabel.textColor = UIColor.label
         expirationDateResultLabel.layer.borderWidth = 2.0
         expirationDateResultLabel.layer.cornerRadius = 8
         expirationDateResultLabel.layer.borderColor = UIColor.label.cgColor
         view.addSubview(expirationDateResultLabel)
+        
+        feedbackLabel.isHidden = true
+        feedbackLabel.translatesAutoresizingMaskIntoConstraints = false
+        feedbackLabel.textAlignment = .center
+        feedbackLabel.textColor = UIColor.red
+        view.addSubview(feedbackLabel)
+        
         
         // Setup Auto Layout constraints
         setupConstraints()
@@ -147,6 +160,14 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
             expirationDateResultLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             expirationDateResultLabel.heightAnchor.constraint(equalTo: expirationDateButton.heightAnchor) // Set label height equal to button height
         ])
+        
+        // Feedback Result Label Constraints
+        NSLayoutConstraint.activate([
+            feedbackLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            feedbackLabel.topAnchor.constraint(equalTo: doneButton.bottomAnchor, constant: 20), // Position
+            feedbackLabel.widthAnchor.constraint(equalToConstant: 100), // Set a fixed width
+            feedbackLabel.heightAnchor.constraint(equalToConstant: 50) // Set a fixed height height
+        ])
     }
 
     @objc func barcodeButtonTapped() {
@@ -175,10 +196,13 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
                 if let detectedText = detectedText {
                     print("Detected barcode: \(detectedText)")
                     self?.barcodeResultLabel.text = detectedText
+                    self?.barcodeResultLabel.textColor = UIColor.label
                     // Handle the detected barcode text
                 } else {
                     print("No barcode detected")
                     // Handle the case where no barcode is detected
+                    self?.barcodeResultLabel.text = "No barcode detected"
+                    self?.barcodeResultLabel.textColor = UIColor.red
                 }
             }
         case .expirationDate:
@@ -188,9 +212,12 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
                     print("Detected text: \(detectedText)")
                     // Handle the detected text (expiration date)
                     self?.expirationDateResultLabel.text = detectedText
+                    self?.expirationDateResultLabel.textColor = UIColor.label
                 } else {
                     print("No text detected")
                     // Handle the case where no text is detected
+                    self?.expirationDateResultLabel.text = "Expiration date was not detected"
+                    self?.expirationDateResultLabel.textColor = UIColor.red
                     
                 }
             }
@@ -229,11 +256,15 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
     @objc func doneButtonTapped() {
         guard let barcode = barcodeResultLabel.text, !barcode.isEmpty else {
             print("Barcode is empty")
+            feedbackLabel.isHidden = false
+            feedbackLabel.text = "Barcode is empty"
             return
         }
 
         guard let expirationDateString = expirationDateResultLabel.text, !expirationDateString.isEmpty, let standardizedExpirationDate = standardizedDate(from: expirationDateString) else {
             print("Expiration date is invalid or empty")
+            feedbackLabel.isHidden = false
+            feedbackLabel.text = "Expiration date is invalid or empty"
             return
         }
         
@@ -245,6 +276,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
                     // Handle the success case
                     // Optionally use expirationDate here as needed
                     // ...
+                    self?.feedbackLabel.isHidden = true
                     print("Successfully got the product based on barcode and expiration date")
                     print("Product Name: \(product.product_name)")
                     print("Image URL: \(String(describing: product.image_front_url))")
@@ -253,7 +285,8 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
                 case .failure(let error):
                     print("Error fetching product: \(error)")
                     // Handle the error case
-                    // ...
+                    self?.feedbackLabel.isHidden = false
+                    self?.feedbackLabel.text = "Error fetching product"
                 }
             }
         }
@@ -301,6 +334,8 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
     }
 }
 
+
+// might not be needed?
 extension DateFormatter {
     static let yourFormatter: DateFormatter = {
         let formatter = DateFormatter()
