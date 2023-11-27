@@ -19,8 +19,21 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.backgroundColor = ColoursManager.first
+        // Customize navigation bar appearance
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = ColoursManager.second // Dynamic color for background
+        appearance.titleTextAttributes = [.foregroundColor: ColoursManager.third as Any] // Dynamic color for title
+
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
+        if #available(iOS 15.0, *) {
+            navigationController?.navigationBar.compactAppearance = appearance
+        }
         itemManager.populateItems()
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Item", style: .plain, target: self, action: #selector(rightBarButtonTapped))
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,10 +77,40 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             // Configure your cell...
             cell.customCellLabel.text = item.title
             cell.customCellPicture.image = item.image
+            cell.layer.cornerRadius = 10 // Adjust this value to your preference
+            cell.layer.masksToBounds = true
         }
         print("cellForRowAt: cell is being configured with the correct item and that the item has an image")
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = ColoursManager.first // Choose a background color
+
+        let headerLabel = UILabel()
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerLabel.textColor = ColoursManager.third // Set your desired text color
+        //headerLabel.font = UIFont.boldSystemFont(ofSize: 16) // Customize font as needed
+        headerLabel.font = ColoursManager.font1 // Customize font as needed
+
+        let date = Array(itemManager.items.keys)[section]
+        headerLabel.text = DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none)
+
+        headerView.addSubview(headerLabel)
+
+        NSLayoutConstraint.activate([
+            headerLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16), // Adjust the padding as needed
+            headerLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16)
+        ])
+
+        return headerView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40 // Adjust the height as needed
     }
     
     // MARK: - Navigation Bar Button Action

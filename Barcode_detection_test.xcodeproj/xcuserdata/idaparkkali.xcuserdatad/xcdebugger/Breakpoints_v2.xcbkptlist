@@ -46,8 +46,8 @@
             filePath = "Barcode_detection_test/Controls/TableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
             landmarkName = "TableViewController"
             landmarkType = "3">
             <Locations>
@@ -94,8 +94,8 @@
             filePath = "Barcode_detection_test/Controls/TableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
             landmarkName = "rightBarButtonTapped()"
             landmarkType = "7">
          </BreakpointContent>
@@ -110,8 +110,8 @@
             filePath = "Barcode_detection_test/Controls/TableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
             landmarkName = "rightBarButtonTapped()"
             landmarkType = "7">
             <Locations>

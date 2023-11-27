@@ -20,7 +20,9 @@ struct Product: Codable {
 class ProductFetcher {
     
     func fetchProduct(barcode: String, completion: @escaping (Result<Product, Error>) -> Void) {
-        let urlString = "https://world.openfoodfacts.net/api/v2/product/\(barcode)"
+        // let urlString = "https://world.openfoodfacts.net/api/v2/product/\(barcode)"
+        
+        let urlString = "https://world.openfoodfacts.org/api/v2/product/\(barcode)"
         guard let url = URL(string: urlString) else {
             completion(.failure(URLError(.badURL)))
             return

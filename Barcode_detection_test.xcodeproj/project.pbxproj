@@ -21,6 +21,7 @@
 		5EABD2FA2B062918005C1B47 /* PickManuallyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EABD2F92B062918005C1B47 /* PickManuallyViewController.swift */; };
 		5EABD2FC2B062EA1005C1B47 /* ProductFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EABD2FB2B062EA1005C1B47 /* ProductFetcher.swift */; };
 		5EDE068A2B1117D40076F416 /* CustomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDE06892B1117D40076F416 /* CustomSheetViewController.swift */; };
+		5EDE068C2B12664B0076F416 /* ColoursManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDE068B2B12664B0076F416 /* ColoursManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 		5EABD2F92B062918005C1B47 /* PickManuallyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickManuallyViewController.swift; sourceTree = "<group>"; };
 		5EABD2FB2B062EA1005C1B47 /* ProductFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFetcher.swift; sourceTree = "<group>"; };
 		5EDE06892B1117D40076F416 /* CustomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSheetViewController.swift; sourceTree = "<group>"; };
+		5EDE068B2B12664B0076F416 /* ColoursManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColoursManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 				5EABD2F52B0520B1005C1B47 /* DetectTextManager.swift */,
 				5EABD2F72B0589D0005C1B47 /* DetectBarcodeManager.swift */,
 				5EABD2FB2B062EA1005C1B47 /* ProductFetcher.swift */,
+				5EDE068B2B12664B0076F416 /* ColoursManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -193,6 +196,7 @@
 				5EABD2FA2B062918005C1B47 /* PickManuallyViewController.swift in Sources */,
 				5EABD2F62B0520B1005C1B47 /* DetectTextManager.swift in Sources */,
 				5E4F919E2B0433ED00F9B915 /* CustomTableViewCell.swift in Sources */,
+				5EDE068C2B12664B0076F416 /* ColoursManager.swift in Sources */,
 				5EABD2FC2B062EA1005C1B47 /* ProductFetcher.swift in Sources */,
 				5E1BFF2E2AFBB85900B45E56 /* AppDelegate.swift in Sources */,
 				5EDE068A2B1117D40076F416 /* CustomSheetViewController.swift in Sources */,
