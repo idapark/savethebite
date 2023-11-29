@@ -5,6 +5,7 @@
 //  Created by Ida Parkkali on 24.11.2023.
 //
 import UIKit
+import Lottie
 
 class CustomSheetViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -29,6 +30,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
     }
     
     var currentScanMode: ScanMode = .none
+    let animationView = LottieAnimationView()
     
     let barcodeButton = UIButton()
     let expirationDateButton = UIButton()
@@ -44,7 +46,6 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         barcodeButton.translatesAutoresizingMaskIntoConstraints = false
         expirationDateButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.translatesAutoresizingMaskIntoConstraints = false
@@ -340,12 +341,48 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
                 let newItem = Item(title: name, image: picture, date: date1)
                 self?.delegate?.didAddNewItem(newItem)
+                self?.playAnimation()
                 self?.navigationController?.popViewController(animated: true)
             }
             alert.addAction(okAction)
 
             present(alert, animated: true, completion: nil)
     }
+    
+    func playAnimation() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let currentWindow = windowScene.windows.first(where: { $0.isKeyWindow }) else { return }
+
+        currentWindow.addSubview(animationView)
+
+        // Set up the animation view
+        animationView.animation = LottieAnimation.named("icons8-success")  // Your animation file name
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .playOnce
+        animationView.animationSpeed = 0.7
+        animationView.isHidden = false
+        animationView.alpha = 1  // Start fully visible
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            animationView.centerXAnchor.constraint(equalTo: currentWindow.centerXAnchor),
+            animationView.centerYAnchor.constraint(equalTo: currentWindow.centerYAnchor),
+            animationView.widthAnchor.constraint(equalToConstant: 200),
+            animationView.heightAnchor.constraint(equalToConstant: 200)
+        ])
+
+        animationView.play { [weak self] (finished) in
+            // Fade out animation after it's done playing
+            UIView.animate(withDuration: 1.0, animations: {
+                self?.animationView.alpha = 0  // Fade to transparent
+            }) { _ in
+                self?.animationView.isHidden = true
+                self?.animationView.removeFromSuperview()
+            }
+        }
+    }
+
+
     
     func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
         DispatchQueue.global().async {
