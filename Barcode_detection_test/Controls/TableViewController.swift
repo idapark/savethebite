@@ -33,6 +33,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         }
         itemManager.populateItems()
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Item", style: .plain, target: self, action: #selector(rightBarButtonTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "About", style: .plain, target: self, action: #selector(leftBarButtonTapped))
         
     }
     
@@ -140,6 +141,28 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         }
         
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc func leftBarButtonTapped() {
+        let alertController = UIAlertController(title: "App Info",
+                                                message: "Made by Ida Parkkali\nIcons by Icons8\nThank you for testing my app!",
+                                                preferredStyle: .alert)
+        
+        // Action for opening the link
+        let linkAction = UIAlertAction(title: "Visit Icons8.com", style: .default) { _ in
+            if let url = URL(string: "https://icons8.com") {
+                    UIApplication.shared.open(url)
+            }
+        }
+
+        // Cancel action
+        let cancelAction = UIAlertAction(title: "Go back", style: .cancel)
+
+        
+        alertController.addAction(linkAction)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true)
     }
     
     /*

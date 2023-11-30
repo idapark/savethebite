@@ -291,6 +291,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
                                 print("Expiration date of the product (standardized): \(standardizedExpirationDate)")
                                 self?.showImageAlert(name: product.product_name, picture: image, date1: standardizedExpirationDate)
                                 
+                                
                             } else {
                                 print("Error loading image")
                                 self?.feedbackLabel.isHidden = false
@@ -340,8 +341,8 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
 
         let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
                 let newItem = Item(title: name, image: picture, date: date1)
-                self?.delegate?.didAddNewItem(newItem)
                 self?.playAnimation()
+                self?.delegate?.didAddNewItem(newItem)
                 self?.navigationController?.popViewController(animated: true)
             }
             alert.addAction(okAction)
@@ -378,6 +379,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
             }) { _ in
                 self?.animationView.isHidden = true
                 self?.animationView.removeFromSuperview()
+                self?.dismiss(animated: true, completion: nil)
             }
         }
     }
