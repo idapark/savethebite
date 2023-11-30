@@ -174,6 +174,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                     tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
                 }
             }
+            updateTableViewBackground()
         }
     }
     

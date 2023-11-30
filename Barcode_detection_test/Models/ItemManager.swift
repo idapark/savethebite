@@ -21,8 +21,8 @@ class ItemManager {
         let item1 = Item(title: "Test1", image: UIImage(systemName: "waterbottle"), date: Date())
         let item2 = Item(title: "Test2", image: UIImage(systemName: "carrot"), date: Date(timeIntervalSinceReferenceDate: -123456789.0))
 
-        //addItem(item1)
-        //addItem(item2)
+        addItem(item1)
+        addItem(item2)
     }
 
     func addItem(_ item: Item) {
