@@ -213,7 +213,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     
     @objc func leftBarButtonTapped() {
         let alertController = UIAlertController(title: "App Info",
-                                                message: "Made by Ida Parkkali\nIcons by Icons8\nThank you for testing my app!",
+                                                message: "Made by Ida Parkkali\nIcons by Icons8\nIllustration by Elisabet Guba from Ouch!\nThank you for testing my app!",
                                                 preferredStyle: .alert)
         
         // Action for opening the link
