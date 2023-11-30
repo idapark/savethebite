@@ -17,6 +17,8 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     // let textDetectionUtility = DetectBarcodeManager()
     let sheetViewController = CustomSheetViewController()
     var emptyTableViewGifView: UIImageView?
+    var emptyTableViewContainerView: UIView?
+    var emptyMessageLabel: UILabel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,11 +37,34 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         itemManager.populateItems()
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Item", style: .plain, target: self, action: #selector(rightBarButtonTapped))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "About", style: .plain, target: self, action: #selector(leftBarButtonTapped))
+        
+        // Initialize the container view
+        emptyTableViewContainerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 300))  // Adjust height as needed
+        tableView.addSubview(emptyTableViewContainerView!)
+            
+        // Initialize and configure the GIF view
+        emptyTableViewGifView = UIImageView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 200))
+        emptyTableViewGifView?.loadGif(name: "techny-shopping-basket-full-of-groceries")
+        emptyTableViewGifView?.contentMode = .scaleAspectFit
+        emptyTableViewContainerView?.addSubview(emptyTableViewGifView!)
+
+        // Initialize and configure the label
+        emptyMessageLabel = UILabel(frame: CGRect(x: 0, y: 200, width: tableView.bounds.width, height: 100))
+        emptyMessageLabel?.text = "Seems like you don't have any items added.\nYou can add items by pressing the\nbutton on the upper right corner."
+        emptyMessageLabel?.textAlignment = .center
+        emptyMessageLabel?.textColor = .white
+        emptyMessageLabel?.font = UIFont.systemFont(ofSize: 16) // Adjust font size as needed
+        emptyMessageLabel?.numberOfLines = 0  // Allows for multiple lines
+        emptyTableViewContainerView?.addSubview(emptyMessageLabel!)
+
+        emptyTableViewContainerView?.isHidden = true // Initially hidden
+        /*
         emptyTableViewGifView = UIImageView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 200))
         emptyTableViewGifView?.loadGif(name: "techny-shopping-basket-full-of-groceries")
         emptyTableViewGifView?.contentMode = .scaleAspectFit
         tableView.addSubview(emptyTableViewGifView!)
         emptyTableViewGifView?.isHidden = true // Initially hidden
+         */
         
     }
     
@@ -52,12 +77,12 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     func updateTableViewBackground() {
         let itemCount = itemManager.items.values.flatMap { $0 }.count
         tableView.reloadData()
-        emptyTableViewGifView?.isHidden = itemCount != 0
+        emptyTableViewContainerView?.isHidden = itemCount != 0
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        emptyTableViewGifView?.center = tableView.center
+        emptyTableViewContainerView?.center = CGPoint(x: tableView.center.x, y: tableView.center.y - (emptyTableViewContainerView?.frame.height ?? 0) / 2)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -132,6 +157,30 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         return 40 // Adjust the height as needed
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Determine the item to delete from your data source
+            let date = Array(itemManager.items.keys)[indexPath.section]
+            if var items = itemManager.items[date] {
+                items.remove(at: indexPath.row)
+                itemManager.items[date] = items
+
+                // Delete the row from the table view
+                tableView.deleteRows(at: [indexPath], with: .fade)
+
+                // If there are no more items in the section, you may choose to delete the section or update your UI accordingly
+                if items.isEmpty {
+                    itemManager.items.removeValue(forKey: date)
+                    tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    
     // MARK: - Navigation Bar Button Action
     
     @objc func rightBarButtonTapped() {
@@ -183,52 +232,6 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         present(alertController, animated: true)
     }
     
-    /*
-    func presentCamera() {
-        sheetViewController.modalPresentationStyle = .formSheet
-
-        if let sheetPresentationController = sheetViewController.sheetPresentationController {
-            sheetPresentationController.detents = [.medium()]  // Adjust this as needed
-            sheetPresentationController.prefersGrabberVisible = true
-        }
-
-        self.present(sheetViewController, animated: true, completion: nil)
-    }
-     */
-    
-    /*
-    func presentCamera() {
-        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
-            // Handle camera not available scenario
-            print("The camera was not available")
-            return
-        }
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        imagePicker.allowsEditing = false
-        present(imagePicker, animated: true)
-    }
-    
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        imagePicker.dismiss(animated: true, completion: nil)
-        
-        if let image = info[.originalImage] as? UIImage, let ciImage = CIImage(image: image) {
-            textDetectionUtility.detectBarcode(in: ciImage) { [weak self] detectedText in
-                guard let self = self else { return } // Safely unwrapping self
-                guard let detectedText = detectedText else {
-                    // Handle no text found
-                    print("Detected text could not be opened")
-                    return
-                }
-                // Now you can use 'self' here to refer to your TableViewController instance
-                // For example, updating a property or calling a method on 'self'
-                print("The detected text: \(detectedText)")
-                
-            }
-        }
-    }
-     */
 }
 
 protocol PickManuallyViewControllerDelegate: AnyObject {
