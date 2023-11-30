@@ -16,6 +16,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     // let imagePicker = UIImagePickerController()
     // let textDetectionUtility = DetectBarcodeManager()
     let sheetViewController = CustomSheetViewController()
+    var emptyTableViewGifView: UIImageView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,12 +35,29 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         itemManager.populateItems()
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Item", style: .plain, target: self, action: #selector(rightBarButtonTapped))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "About", style: .plain, target: self, action: #selector(leftBarButtonTapped))
+        emptyTableViewGifView = UIImageView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 200))
+        emptyTableViewGifView?.loadGif(name: "techny-shopping-basket-full-of-groceries")
+        emptyTableViewGifView?.contentMode = .scaleAspectFit
+        tableView.addSubview(emptyTableViewGifView!)
+        emptyTableViewGifView?.isHidden = true // Initially hidden
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        //tableView.reloadData()
+        updateTableViewBackground()
+    }
+    
+    func updateTableViewBackground() {
+        let itemCount = itemManager.items.values.flatMap { $0 }.count
         tableView.reloadData()
+        emptyTableViewGifView?.isHidden = itemCount != 0
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        emptyTableViewGifView?.center = tableView.center
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -224,7 +242,8 @@ protocol CustomSheetViewControllerDelegate: AnyObject {
 extension TableViewController: PickManuallyViewControllerDelegate, CustomSheetViewControllerDelegate {
     func didAddNewItem(_ item: Item) {
         itemManager.addItem(item)
-        tableView.reloadData()
+        //tableView.reloadData()
+        updateTableViewBackground()
     }
 }
 

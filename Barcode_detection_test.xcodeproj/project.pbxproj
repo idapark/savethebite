@@ -15,6 +15,8 @@
 		5E1BFF3A2AFBB85D00B45E56 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E1BFF382AFBB85D00B45E56 /* LaunchScreen.storyboard */; };
 		5E1F6FCB2B03852200CFBAE3 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1F6FCA2B03852200CFBAE3 /* TableViewController.swift */; };
 		5E4F919E2B0433ED00F9B915 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4F919D2B0433ED00F9B915 /* CustomTableViewCell.swift */; };
+		5E59321D2B18AF9B005F5D3A /* UIImage+Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E59321C2B18AF9B005F5D3A /* UIImage+Gif.swift */; };
+		5E5932202B18B008005F5D3A /* techny-shopping-basket-full-of-groceries.gif in Resources */ = {isa = PBXBuildFile; fileRef = 5E59321F2B18B008005F5D3A /* techny-shopping-basket-full-of-groceries.gif */; };
 		5E77FCC52B17FF0800F8FE8E /* icons8-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 5E77FCC42B17FF0800F8FE8E /* icons8-success.json */; };
 		5EABD2F42B051E4A005C1B47 /* ItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EABD2F32B051E4A005C1B47 /* ItemManager.swift */; };
 		5EABD2F62B0520B1005C1B47 /* DetectTextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EABD2F52B0520B1005C1B47 /* DetectTextManager.swift */; };
@@ -38,6 +40,8 @@
 		5E1F6FCA2B03852200CFBAE3 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		5E4F919D2B0433ED00F9B915 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		5E4F91A52B04D8BA00F9B915 /* networking_JSON.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = networking_JSON.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		5E59321C2B18AF9B005F5D3A /* UIImage+Gif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Gif.swift"; sourceTree = "<group>"; };
+		5E59321F2B18B008005F5D3A /* techny-shopping-basket-full-of-groceries.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "techny-shopping-basket-full-of-groceries.gif"; sourceTree = "<group>"; };
 		5E77FCC42B17FF0800F8FE8E /* icons8-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "icons8-success.json"; sourceTree = "<group>"; };
 		5EABD2F32B051E4A005C1B47 /* ItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemManager.swift; sourceTree = "<group>"; };
 		5EABD2F52B0520B1005C1B47 /* DetectTextManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectTextManager.swift; sourceTree = "<group>"; };
@@ -85,6 +89,8 @@
 				5EABD2F12B051DF7005C1B47 /* Views */,
 				5EABD2F22B051DFD005C1B47 /* Controls */,
 				5E1BFF312AFBB85900B45E56 /* ViewController.swift */,
+				5E59321C2B18AF9B005F5D3A /* UIImage+Gif.swift */,
+				5E59321E2B18AFF3005F5D3A /* assets_gif */,
 				5E1BFF362AFBB85D00B45E56 /* Assets.xcassets */,
 				5E77FCC42B17FF0800F8FE8E /* icons8-success.json */,
 				5E1BFF382AFBB85D00B45E56 /* LaunchScreen.storyboard */,
@@ -92,6 +98,14 @@
 				5E4F91A52B04D8BA00F9B915 /* networking_JSON.playground */,
 			);
 			path = Barcode_detection_test;
+			sourceTree = "<group>";
+		};
+		5E59321E2B18AFF3005F5D3A /* assets_gif */ = {
+			isa = PBXGroup;
+			children = (
+				5E59321F2B18B008005F5D3A /* techny-shopping-basket-full-of-groceries.gif */,
+			);
+			path = assets_gif;
 			sourceTree = "<group>";
 		};
 		5EABD2F02B051DEC005C1B47 /* Models */ = {
@@ -191,6 +205,7 @@
 			files = (
 				5E1BFF3A2AFBB85D00B45E56 /* LaunchScreen.storyboard in Resources */,
 				5E77FCC52B17FF0800F8FE8E /* icons8-success.json in Resources */,
+				5E5932202B18B008005F5D3A /* techny-shopping-basket-full-of-groceries.gif in Resources */,
 				5E1BFF372AFBB85D00B45E56 /* Assets.xcassets in Resources */,
 				5E1BFF352AFBB85900B45E56 /* Main.storyboard in Resources */,
 			);
@@ -207,6 +222,7 @@
 				5EABD2F82B0589D0005C1B47 /* DetectBarcodeManager.swift in Sources */,
 				5EABD2FA2B062918005C1B47 /* PickManuallyViewController.swift in Sources */,
 				5EABD2F62B0520B1005C1B47 /* DetectTextManager.swift in Sources */,
+				5E59321D2B18AF9B005F5D3A /* UIImage+Gif.swift in Sources */,
 				5E4F919E2B0433ED00F9B915 /* CustomTableViewCell.swift in Sources */,
 				5EDE068C2B12664B0076F416 /* ColoursManager.swift in Sources */,
 				5EABD2FC2B062EA1005C1B47 /* ProductFetcher.swift in Sources */,
