@@ -143,8 +143,8 @@ class PickManuallyViewController: UIViewController, UIImagePickerControllerDeleg
             // Code to initiate taking a picture
             self?.presentCamera { image in
                 if let image = image {
-                    let newItem = Item(title: productName, image: image, date: selectedDate)
-                    self?.delegate?.didAddNewItem(newItem)
+                    //let newItem = Item(title: productName, image: image, date: selectedDate)
+                    self?.delegate?.didAddNewItem(title: productName, image: image, date: selectedDate)
                     self?.navigationController?.popViewController(animated: true)
                 } else {
                     // Handle the case where no image was taken
@@ -153,8 +153,8 @@ class PickManuallyViewController: UIViewController, UIImagePickerControllerDeleg
         }
 
         let addWithoutPictureAction = UIAlertAction(title: "Add without Picture", style: .default) { [weak self] _ in
-            let newItem = Item(title: productName, image: nil, date: selectedDate)
-            self?.delegate?.didAddNewItem(newItem)
+            //let newItem = Item(title: productName, image: nil, date: selectedDate)
+            self?.delegate?.didAddNewItem(title: productName, image: nil, date: selectedDate)
             self?.navigationController?.popViewController(animated: true)
         }
 
@@ -195,10 +195,10 @@ class PickManuallyViewController: UIViewController, UIImagePickerControllerDeleg
     
     func showImageAlert(name: String, picture: UIImage, date1: Date) {
         // Add extra newlines to create space for the image
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy" // Custom format for date
+        //let dateFormatter = DateFormatter()
+        //dateFormatter.dateFormat = "dd.MM.yyyy" // Custom format for date
 
-        let formattedDate = dateFormatter.string(from: date1)
+        let formattedDate = DateFormatter.shared.string(from: date1)
 
         let message = "\(name)\n\(formattedDate)\n\n\n\n\n\n\n\n\n\n" // Using the formatted date
         let alert = UIAlertController(title: "Is this the product you scanned?", message: message, preferredStyle: .alert)
@@ -218,8 +218,8 @@ class PickManuallyViewController: UIViewController, UIImagePickerControllerDeleg
         ])
 
         let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
-                let newItem = Item(title: name, image: picture, date: date1)
-                self?.delegate?.didAddNewItem(newItem)
+                //let newItem = Item(title: name, image: picture, date: date1)
+                self?.delegate?.didAddNewItem(title: name, image: picture, date: date1)
                 self?.navigationController?.popViewController(animated: true)
             }
             alert.addAction(okAction)

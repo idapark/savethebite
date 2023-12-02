@@ -8,20 +8,30 @@
 import UIKit
 import AVFoundation
 import Vision
+import CoreData
 
 
 class TableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    var itemManager = ItemManager()
+    //var itemManager = ItemManager()
+    var itemManager: ItemManager!
     // let imagePicker = UIImagePickerController()
     // let textDetectionUtility = DetectBarcodeManager()
     let sheetViewController = CustomSheetViewController()
     var emptyTableViewGifView: UIImageView?
     var emptyTableViewContainerView: UIView?
     var emptyMessageLabel: UILabel?
+    var items: [Date: [StoredItem]] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let managedContext = appDelegate.persistentContainer.viewContext
+        itemManager = ItemManager(managedContext: managedContext)
+
+        items = itemManager.fetchItems()
+        
         tableView.backgroundColor = ColoursManager.first
         // Customize navigation bar appearance
         let appearance = UINavigationBarAppearance()
@@ -34,7 +44,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         if #available(iOS 15.0, *) {
             navigationController?.navigationBar.compactAppearance = appearance
         }
-        itemManager.populateItems()
+        //itemManager.populateItems()
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Item", style: .plain, target: self, action: #selector(rightBarButtonTapped))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "About", style: .plain, target: self, action: #selector(leftBarButtonTapped))
         
@@ -75,7 +85,8 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     }
     
     func updateTableViewBackground() {
-        let itemCount = itemManager.items.values.flatMap { $0 }.count
+        let groupedItems = itemManager.fetchItems()
+        let itemCount = groupedItems.values.flatMap { $0 }.count
         tableView.reloadData()
         emptyTableViewContainerView?.isHidden = itemCount != 0
     }
@@ -97,18 +108,27 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return itemManager.items.keys.count
+        return items.keys.count
     }
     
+    
+    /*
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let date = Array(itemManager.items.keys)[section]
         return itemManager.items[date]?.count ?? 0
     }
+     */
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            let date = Array(items.keys)[section]
+            return items[date]?.count ?? 0
+        }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let date = Array(itemManager.items.keys)[section]
+        let date = Array(items.keys)[section]
         // Format the date as needed
-        return DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none)
+        return DateFormatter.shared.string(from: date)
+        //return DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -116,11 +136,13 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             fatalError("Expected CustomTableViewCell")
         }
         
-        let date = Array(itemManager.items.keys)[indexPath.section]
-        if let item = itemManager.items[date]?[indexPath.row] {
+        let date = Array(items.keys)[indexPath.section]
+        if let storedItem = items[date]?[indexPath.row] {
             // Configure your cell...
-            cell.customCellLabel.text = item.title
-            cell.customCellPicture.image = item.image
+            cell.customCellLabel.text = storedItem.title
+            if let imageData = storedItem.image {
+                cell.customCellPicture.image = UIImage(data: imageData)
+            }
             cell.layer.cornerRadius = 10 // Adjust this value to your preference
             cell.layer.masksToBounds = true
         }
@@ -139,7 +161,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         //headerLabel.font = UIFont.boldSystemFont(ofSize: 16) // Customize font as needed
         headerLabel.font = ColoursManager.font1 // Customize font as needed
 
-        let date = Array(itemManager.items.keys)[section]
+        let date = Array(items.keys)[section]
         headerLabel.text = DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none)
 
         headerView.addSubview(headerLabel)
@@ -157,29 +179,35 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         return 40 // Adjust the height as needed
     }
     
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Determine the item to delete from your data source
-            let date = Array(itemManager.items.keys)[indexPath.section]
-            if var items = itemManager.items[date] {
-                items.remove(at: indexPath.row)
-                itemManager.items[date] = items
+            let dateKey = Array(items.keys)[indexPath.section]
+            
+            if var itemArray = items[dateKey] {
+                // Fetch the Core Data object to delete
+                let objectToDelete = itemArray[indexPath.row]
 
-                // Delete the row from the table view
-                tableView.deleteRows(at: [indexPath], with: .fade)
+                // Delete the object using ItemManager
+                itemManager.deleteItem(objectToDelete)
 
-                // If there are no more items in the section, you may choose to delete the section or update your UI accordingly
-                if items.isEmpty {
-                    itemManager.items.removeValue(forKey: date)
+                // Remove the item from the array
+                itemArray.remove(at: indexPath.row)
+
+                // Update the items dictionary and UI accordingly
+                if itemArray.isEmpty {
+                    items.removeValue(forKey: dateKey)
                     tableView.deleteSections(IndexSet(integer: indexPath.section), with: .fade)
+                } else {
+                    items[dateKey] = itemArray
+                    tableView.deleteRows(at: [indexPath], with: .fade)
                 }
+
+                // Update the empty state view
+                updateTableViewBackground()
             }
-            updateTableViewBackground()
         }
     }
-    
-    
-    
     
     
     // MARK: - Navigation Bar Button Action
@@ -236,19 +264,27 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
 }
 
 protocol PickManuallyViewControllerDelegate: AnyObject {
-    func didAddNewItem(_ item: Item)
-}
+    func didAddNewItem(title: String, image: UIImage?, date: Date)}
 
 protocol CustomSheetViewControllerDelegate: AnyObject {
-    func didAddNewItem(_ item: Item)
+    func didAddNewItem(title: String, image: UIImage?, date: Date)
 }
 
 extension TableViewController: PickManuallyViewControllerDelegate, CustomSheetViewControllerDelegate {
-    func didAddNewItem(_ item: Item) {
-        itemManager.addItem(item)
-        //tableView.reloadData()
+    func didAddNewItem(title: String, image: UIImage?, date: Date) {
+        itemManager.addItem(title: title, image: image, date: date)
+        items = itemManager.fetchItems() // Refresh the items array
+            //tableView.reloadData()
         updateTableViewBackground()
     }
+}
+
+extension DateFormatter {
+    static let shared: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy" // Set your desired format
+        return formatter
+    }()
 }
 
 

@@ -23,7 +23,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
             "dd.MM.yyyy", "d.MM.yyyy", "dd.M.yyyy", "d.M.yyyy",
             "dd-MM-yyyy", "d-MM-yyyy", "dd-M-yyyy", "d-M-yyyy",
             "dd/MM/yyyy", "d/MM/yyyy", "dd/M/yyyy", "d/M/yyyy",
-            "MM/yyyy",
+            "MM/yyyy", "dd.MM.yy",
             "dd.MM.", "ddMMyy", // Short formats without year
             // Include other formats as needed
         ]
@@ -317,10 +317,11 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
     
     func showImageAlert(name: String, picture: UIImage, date1: Date) {
         // Add extra newlines to create space for the image
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy" // Custom format for date
+        //let dateFormatter = DateFormatter()
+        //dateFormatter.dateFormat = "dd.MM.yyyy" // Custom format for date
 
-        let formattedDate = dateFormatter.string(from: date1)
+        let formattedDate = DateFormatter.shared.string(from: date1)
+        
 
         let message = "\(name)\n\(formattedDate)\n\n\n\n\n\n\n\n\n\n" // Using the formatted date
         let alert = UIAlertController(title: "Is this the product you scanned?", message: message, preferredStyle: .alert)
@@ -340,9 +341,9 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         ])
 
         let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
-                let newItem = Item(title: name, image: picture, date: date1)
+                //let newItem = Item(title: name, image: picture, date: date1)
                 self?.playAnimation()
-                self?.delegate?.didAddNewItem(newItem)
+                self?.delegate?.didAddNewItem(title: name, image: picture, date: date1)
                 self?.navigationController?.popViewController(animated: true)
             }
             alert.addAction(okAction)
@@ -421,7 +422,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
     }
 
     func tryParseShortDate(_ dateString: String, withYear year: Int, formatter: DateFormatter) -> Date? {
-        let shortFormats = ["dd.MM.", "ddMMyy", "MM/yyyy"] // Include "MM/yyyy"
+        let shortFormats = ["dd.MM.", "dd.MM.yy", "ddMMyy", "MM/yyyy"] // Include "dd.MM.yy" and "ddMMyy"
         let defaultDay = "01" // Default day to use when day is missing
 
         for format in shortFormats {
@@ -432,9 +433,9 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
                     formatter.dateFormat = "dd.MM.yyyy"
                     let newDateString = defaultDay + "." + formatter.string(from: date)
                     return formatter.date(from: newDateString)
-                } else {
-                    // For other short formats, append the current year
-                    let newDateString = formatter.string(from: date) + ".\(year)"
+                } else if format.contains("yy") {
+                    // For "dd.MM.yy" and "ddMMyy" formats, append the century to the year
+                    let newDateString = convertToFourDigitYearString(from: dateString, year: year, formatter: formatter)
                     formatter.dateFormat = "dd.MM.yyyy"
                     return formatter.date(from: newDateString)
                 }
@@ -443,15 +444,32 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
 
         return nil
     }
+
+    func convertToFourDigitYearString(from dateString: String, year: Int, formatter: DateFormatter) -> String {
+        let century = year / 100 * 100  // Get the century part of the current year
+        let twoDigitYear = year % 100   // Get the last two digits of the current year
+
+        formatter.dateFormat = "yy"
+        if let yearFromDate = formatter.date(from: String(twoDigitYear)) {
+            formatter.dateFormat = "yyyy"
+            let fourDigitYear = formatter.string(from: yearFromDate)
+
+            return dateString.replacingOccurrences(of: String(twoDigitYear), with: fourDigitYear)
+        }
+
+        return dateString // Return original string if conversion is not possible
+    }
 }
 
 
 // might not be needed?
-extension DateFormatter {
-    static let yourFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        // Set the date format according to how your date is being displayed
-        formatter.dateFormat = "dd/MM/yyyy" // Modify this as per your date format
-        return formatter
-    }()
-}
+/*
+ extension DateFormatter {
+ static let yourFormatter: DateFormatter = {
+ let formatter = DateFormatter()
+ // Set the date format according to how your date is being displayed
+ formatter.dateFormat = "dd/MM/yyyy" // Modify this as per your date format
+ return formatter
+ }()
+ }
+ */
