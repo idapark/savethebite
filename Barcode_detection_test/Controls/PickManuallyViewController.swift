@@ -24,9 +24,17 @@ class PickManuallyViewController: UIViewController, UIImagePickerControllerDeleg
     
     let imagePicker = UIImagePickerController()
     let productFetcher = ProductFetcher()
+    let backButton = UIBarButtonItem()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Create a new back button
+        
+        backButton.title = "Back"
+        backButton.tintColor = UIColor.red
+
+        // Assign the back button to the navigationItem of the view controller
+        self.navigationItem.backBarButtonItem = backButton
         manualDoneButton.addTarget(self, action: #selector(manualDoneButtonTapped), for: .touchUpInside)
         
         let tapGestureKeyboard = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -34,6 +42,7 @@ class PickManuallyViewController: UIViewController, UIImagePickerControllerDeleg
         let tapGestureDatePicker = UITapGestureRecognizer(target: self, action: #selector(dismissDatePicker))
             view.addGestureRecognizer(tapGestureDatePicker)
         addDoneButtonOnKeyboard()
+    
         
     }
 

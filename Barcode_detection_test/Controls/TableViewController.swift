@@ -32,6 +32,8 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
 
         items = itemManager.fetchItems()
         
+        self.navigationItem.title = "SaveTheBite"
+        
         tableView.backgroundColor = ColoursManager.first
         // Customize navigation bar appearance
         let appearance = UINavigationBarAppearance()
@@ -40,6 +42,11 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
 
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        
+        let backButton = UIBarButtonItem()
+        backButton.title = "Back"
+        
+        self.navigationItem.backBarButtonItem = backButton
 
         if #available(iOS 15.0, *) {
             navigationController?.navigationBar.compactAppearance = appearance
@@ -143,8 +150,18 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             if let imageData = storedItem.image {
                 cell.customCellPicture.image = UIImage(data: imageData)
             }
-            cell.layer.cornerRadius = 10 // Adjust this value to your preference
-            cell.layer.masksToBounds = true
+            // Check if the item is expiring in 3 days or less
+            let daysToExpiration = daysUntilExpiration(from: storedItem.date!)
+            if daysToExpiration <= 3 {
+                // Change corner color to red
+                cell.layer.cornerRadius = 10
+                cell.layer.borderWidth = 2
+                cell.layer.borderColor = ColoursManager.fourth?.cgColor
+            } else {
+                // Reset to default appearance
+                cell.layer.cornerRadius = 10
+                cell.layer.borderWidth = 0
+            }
         }
         print("cellForRowAt: cell is being configured with the correct item and that the item has an image")
         
@@ -207,6 +224,14 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                 updateTableViewBackground()
             }
         }
+    }
+    
+    func daysUntilExpiration(from date: Date) -> Int {
+        let calendar = Calendar.current
+        let startOfCurrentDay = calendar.startOfDay(for: Date())
+        let startOfExpirationDay = calendar.startOfDay(for: date)
+        let components = calendar.dateComponents([.day], from: startOfCurrentDay, to: startOfExpirationDay)
+        return components.day ?? 0
     }
     
     

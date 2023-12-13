@@ -93,22 +93,28 @@
                                 <color key="textColor" name="ColorThird"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vXN-pI-icm">
-                                <rect key="frame" x="121" y="297" width="151" height="34"/>
-                                <color key="backgroundColor" name="ColorThird"/>
-                                <color key="textColor" name="ColorFirst"/>
-                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kxn-dE-OSQ">
-                                <rect key="frame" x="142" y="575" width="109" height="34.333333333333371"/>
+                                <rect key="frame" x="142" y="577.33333333333337" width="109" height="32"/>
                                 <color key="tintColor" name="ColorSecond"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Add" cornerStyle="capsule">
                                     <backgroundConfiguration key="background">
-                                        <color key="backgroundColor" name="AccentColor"/>
+                                        <color key="backgroundColor" name="ColorSecond"/>
                                     </backgroundConfiguration>
+                                    <fontDescription key="titleFontDescription" name="Futura-Bold" family="Futura" pointSize="14"/>
                                 </buttonConfiguration>
                             </button>
+                            <datePicker contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="fpv-qg-WjN">
+                                <rect key="frame" x="111" y="476" width="170" height="51"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="51" id="X0E-RI-92z"/>
+                                </constraints>
+                                <date key="minimumDate" timeIntervalSinceReferenceDate="-978267600">
+                                    <!--1970-01-01 11:00:00 +0000-->
+                                </date>
+                                <date key="maximumDate" timeIntervalSinceReferenceDate="1167562800">
+                                    <!--2037-12-31 11:00:00 +0000-->
+                                </date>
+                            </datePicker>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name of the product" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5h7-rm-SlP">
                                 <rect key="frame" x="35" y="144" width="158" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -128,18 +134,13 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Take picture"/>
                             </button>
-                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="fpv-qg-WjN">
-                                <rect key="frame" x="111" y="476" width="170" height="51"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="51" id="X0E-RI-92z"/>
-                                </constraints>
-                                <date key="minimumDate" timeIntervalSinceReferenceDate="-978267600">
-                                    <!--1970-01-01 11:00:00 +0000-->
-                                </date>
-                                <date key="maximumDate" timeIntervalSinceReferenceDate="1167562800">
-                                    <!--2037-12-31 11:00:00 +0000-->
-                                </date>
-                            </datePicker>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vXN-pI-icm">
+                                <rect key="frame" x="121" y="301" width="151" height="34"/>
+                                <color key="backgroundColor" name="ColorThird"/>
+                                <color key="textColor" name="ColorFirst"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
+                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ld5-a4-QLk"/>
                         <color key="backgroundColor" name="ColorFirst"/>
@@ -151,12 +152,12 @@
                             <constraint firstItem="zHt-VU-1ta" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="119" id="IJO-fS-l1W"/>
                             <constraint firstItem="fpv-qg-WjN" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="111" id="NBC-dl-Ebg"/>
                             <constraint firstItem="vXN-pI-icm" firstAttribute="centerX" secondItem="r0r-us-cpu" secondAttribute="centerX" id="NL3-DA-a3k"/>
-                            <constraint firstItem="vXN-pI-icm" firstAttribute="top" secondItem="zHt-VU-1ta" secondAttribute="bottom" constant="21" id="Qdm-z0-H5Q"/>
+                            <constraint firstItem="vXN-pI-icm" firstAttribute="top" secondItem="zHt-VU-1ta" secondAttribute="bottom" constant="12" id="Qdm-z0-H5Q"/>
                             <constraint firstItem="fpv-qg-WjN" firstAttribute="top" secondItem="r0r-us-cpu" secondAttribute="bottom" constant="24" id="TC5-Uw-jjx"/>
                             <constraint firstItem="fpv-qg-WjN" firstAttribute="centerX" secondItem="r0r-us-cpu" secondAttribute="centerX" id="Vzg-9R-6ME"/>
                             <constraint firstItem="r0r-us-cpu" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="86" id="WUm-Jf-JGZ"/>
                             <constraint firstItem="r0r-us-cpu" firstAttribute="centerX" secondItem="Kxn-dE-OSQ" secondAttribute="centerX" id="e8b-yB-haM"/>
-                            <constraint firstItem="r0r-us-cpu" firstAttribute="top" secondItem="vXN-pI-icm" secondAttribute="bottom" constant="70" id="fiM-wV-AvS"/>
+                            <constraint firstItem="r0r-us-cpu" firstAttribute="top" secondItem="vXN-pI-icm" secondAttribute="bottom" constant="66" id="fiM-wV-AvS"/>
                             <constraint firstItem="zHt-VU-1ta" firstAttribute="centerX" secondItem="ZUQ-HA-26M" secondAttribute="centerX" id="jEC-JQ-mVK"/>
                             <constraint firstItem="vXN-pI-icm" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="121" id="mSh-HP-KEm"/>
                             <constraint firstItem="zHt-VU-1ta" firstAttribute="top" secondItem="ld5-a4-QLk" secondAttribute="top" constant="148" id="rMH-lG-ZaM"/>
@@ -202,6 +203,9 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="lfv-Yv-C0M">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="joJ-W5-13T" kind="relationship" relationship="rootViewController" id="cN6-UD-KJ8"/>
                     </connections>
@@ -212,9 +216,6 @@
         </scene>
     </scenes>
     <resources>
-        <namedColor name="AccentColor">
-            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="ColorFirst">
             <color red="0.10980392156862745" green="0.13333333333333333" blue="0.22745098039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
