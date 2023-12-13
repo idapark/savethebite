@@ -31,6 +31,9 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         itemManager = ItemManager(managedContext: managedContext)
 
         items = itemManager.fetchItems()
+        let sortedItems = itemManager.fetchItems().sorted(by: { $0.key < $1.key })
+        items = Dictionary(uniqueKeysWithValues: sortedItems)
+
         
         self.navigationItem.title = "SaveTheBite"
         
@@ -88,6 +91,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //tableView.reloadData()
+        items = itemManager.fetchItems()
         updateTableViewBackground()
     }
     
@@ -119,17 +123,16 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     }
     
     
-    /*
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let date = Array(itemManager.items.keys)[section]
-        return itemManager.items[date]?.count ?? 0
+        let sortedKeys = items.keys.sorted(by: <)
+        let date = sortedKeys[section]
+        return items[date]?.count ?? 0
     }
-     */
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            let date = Array(items.keys)[section]
-            return items[date]?.count ?? 0
-        }
+    //override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    //        let date = Array(items.keys)[section]
+    //        return items[date]?.count ?? 0
+    //    }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let date = Array(items.keys)[section]
@@ -175,6 +178,66 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         let headerLabel = UILabel()
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.textColor = ColoursManager.third // Set your desired text color
+        headerLabel.font = ColoursManager.font1 // Customize font as needed
+
+        let date = Array(items.keys)[section]
+        headerLabel.text = DateFormatter.shared.string(from: date)
+        headerView.addSubview(headerLabel)
+
+        if let sectionItems = items[date], sectionItems.contains(where: { daysUntilExpiration(from: $0.date!) <= 3 }) {
+            let symbolImageView = UIImageView()
+            symbolImageView.translatesAutoresizingMaskIntoConstraints = false
+            symbolImageView.image = UIImage(systemName: "exclamationmark.triangle.fill")
+            symbolImageView.tintColor = ColoursManager.fourth
+            headerView.addSubview(symbolImageView)
+            
+            let warningLabel = UILabel()
+            warningLabel.translatesAutoresizingMaskIntoConstraints = false
+            warningLabel.text = "Items are about to expire"
+            warningLabel.font = UIFont.systemFont(ofSize: 14) // Adjust font size as needed
+            warningLabel.textColor = ColoursManager.fourth // Adjust color as needed
+            headerView.addSubview(warningLabel)
+            
+            symbolImageView.layer.add(pulseAnimation(), forKey: "pulse")
+
+            NSLayoutConstraint.activate([
+                symbolImageView.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+                symbolImageView.leadingAnchor.constraint(equalTo: headerLabel.trailingAnchor, constant: 8),
+                symbolImageView.widthAnchor.constraint(equalToConstant: 20),
+                symbolImageView.heightAnchor.constraint(equalToConstant: 20),
+                
+                warningLabel.centerYAnchor.constraint(equalTo: symbolImageView.centerYAnchor),
+                warningLabel.leadingAnchor.constraint(equalTo: symbolImageView.trailingAnchor, constant: 4)
+            ])
+        }
+
+        NSLayoutConstraint.activate([
+            headerLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16)
+        ])
+
+        return headerView
+    }
+
+    func pulseAnimation() -> CABasicAnimation {
+        let pulse = CABasicAnimation(keyPath: "transform.scale")
+        pulse.duration = 0.6
+        pulse.fromValue = 1.0
+        pulse.toValue = 1.3
+        pulse.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        pulse.autoreverses = true
+        pulse.repeatCount = .greatestFiniteMagnitude
+        return pulse
+    }
+    
+    /*
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = ColoursManager.first // Choose a background color
+
+        let headerLabel = UILabel()
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerLabel.textColor = ColoursManager.third // Set your desired text color
         //headerLabel.font = UIFont.boldSystemFont(ofSize: 16) // Customize font as needed
         headerLabel.font = ColoursManager.font1 // Customize font as needed
 
@@ -191,6 +254,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
 
         return headerView
     }
+     */
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40 // Adjust the height as needed
