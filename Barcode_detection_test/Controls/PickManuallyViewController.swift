@@ -34,6 +34,7 @@ class PickManuallyViewController: UIViewController, UIImagePickerControllerDeleg
         let tapGestureDatePicker = UITapGestureRecognizer(target: self, action: #selector(dismissDatePicker))
             view.addGestureRecognizer(tapGestureDatePicker)
         addDoneButtonOnKeyboard()
+        
     }
 
     @objc func manualDoneButtonTapped() {

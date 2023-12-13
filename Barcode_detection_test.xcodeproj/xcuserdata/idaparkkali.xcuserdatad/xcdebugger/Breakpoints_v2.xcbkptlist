@@ -46,8 +46,8 @@
             filePath = "Barcode_detection_test/Controls/TableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "229"
-            endingLineNumber = "229"
+            startingLineNumber = "231"
+            endingLineNumber = "231"
             landmarkName = "rightBarButtonTapped()"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "Barcode_detection_test/Controls/TableViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
             landmarkName = "rightBarButtonTapped()"
             landmarkType = "7">
             <Locations>
@@ -126,8 +126,8 @@
             filePath = "Barcode_detection_test/Controls/PickManuallyViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
             landmarkName = "manualDoneButtonTapped()"
             landmarkType = "7">
             <Locations>
@@ -174,8 +174,8 @@
             filePath = "Barcode_detection_test/Controls/PickManuallyViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
             landmarkName = "manualDoneButtonTapped()"
             landmarkType = "7">
          </BreakpointContent>
@@ -190,8 +190,8 @@
             filePath = "Barcode_detection_test/Controls/PickManuallyViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "220"
-            endingLineNumber = "220"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
             landmarkName = "showImageAlert(name:picture:date1:)"
             landmarkType = "7">
             <Locations>
@@ -242,6 +242,53 @@
             endingLineNumber = "449"
             landmarkName = "convertToFourDigitYearString(from:year:formatter:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "0C92F357-1FB4-4C4A-9FB1-1A357DF36256 - 83cbba52d045b43d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Barcode_detection_test.CustomSheetViewController.convertToFourDigitYearString(from: Swift.String, year: Swift.Int, formatter: __C.NSDateFormatter) -&gt; Swift.String"
+                  moduleName = "Barcode_detection_test"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/idaparkkali/Documents/Development/Barcode_detection_test/Barcode_detection_test/Controls/CustomSheetViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "448"
+                  endingLineNumber = "448"
+                  offsetFromSymbolStart = "388">
+               </Location>
+               <Location
+                  uuid = "0C92F357-1FB4-4C4A-9FB1-1A357DF36256 - 83cbba52d045b4dc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Barcode_detection_test.CustomSheetViewController.convertToFourDigitYearString(from: Swift.String, year: Swift.Int, formatter: __C.NSDateFormatter) -&gt; Swift.String"
+                  moduleName = "Barcode_detection_test"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/idaparkkali/Documents/Development/Barcode_detection_test/Barcode_detection_test/Controls/CustomSheetViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "449"
+                  endingLineNumber = "449"
+                  offsetFromSymbolStart = "388">
+               </Location>
+               <Location
+                  uuid = "0C92F357-1FB4-4C4A-9FB1-1A357DF36256 - 83cbba52d045b4dc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Barcode_detection_test.CustomSheetViewController.convertToFourDigitYearString(from: Swift.String, year: Swift.Int, formatter: __C.NSDateFormatter) -&gt; Swift.String"
+                  moduleName = "Barcode_detection_test"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/idaparkkali/Documents/Development/Barcode_detection_test/Barcode_detection_test/Controls/CustomSheetViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "449"
+                  endingLineNumber = "449"
+                  offsetFromSymbolStart = "316">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

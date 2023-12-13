@@ -16,6 +16,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" id="LCp-NQ-ImF">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="sectionIndexBackgroundColor" name="ColorFirst"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="customCell" rowHeight="91" id="5my-vv-mag" customClass="CustomTableViewCell" customModule="Barcode_detection_test" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="50" width="393" height="91"/>
@@ -80,37 +81,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter barcode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHt-VU-1ta">
-                                <rect key="frame" x="142" y="254.00000000000003" width="109" height="20.333333333333343"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Enter barcode" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHt-VU-1ta">
+                                <rect key="frame" x="119" y="251" width="154" height="38"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="19"/>
+                                <color key="textColor" name="ColorThird"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter expiration date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r0r-us-cpu">
-                                <rect key="frame" x="117" y="405.33333333333331" width="159" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Enter expiration date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r0r-us-cpu">
+                                <rect key="frame" x="86" y="401" width="220" height="51"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="19"/>
+                                <color key="textColor" name="ColorThird"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vXN-pI-icm">
-                                <rect key="frame" x="121" y="299.33333333333331" width="151" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="continue"/>
+                                <rect key="frame" x="121" y="297" width="151" height="34"/>
+                                <color key="backgroundColor" name="ColorThird"/>
+                                <color key="textColor" name="ColorFirst"/>
+                                <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="done"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kxn-dE-OSQ">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kxn-dE-OSQ">
                                 <rect key="frame" x="142" y="575" width="109" height="34.333333333333371"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Done"/>
+                                <color key="tintColor" name="ColorSecond"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Add" cornerStyle="capsule">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" name="AccentColor"/>
+                                    </backgroundConfiguration>
+                                </buttonConfiguration>
                             </button>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="fpv-qg-WjN">
-                                <rect key="frame" x="107" y="451.33333333333331" width="179" height="76.666666666666686"/>
-                                <date key="minimumDate" timeIntervalSinceReferenceDate="-978267600">
-                                    <!--1970-01-01 11:00:00 +0000-->
-                                </date>
-                                <date key="maximumDate" timeIntervalSinceReferenceDate="1167562800">
-                                    <!--2037-12-31 11:00:00 +0000-->
-                                </date>
-                            </datePicker>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name of the product" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5h7-rm-SlP">
                                 <rect key="frame" x="35" y="144" width="158" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -130,26 +128,38 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Take picture"/>
                             </button>
+                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="fpv-qg-WjN">
+                                <rect key="frame" x="111" y="476" width="170" height="51"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="51" id="X0E-RI-92z"/>
+                                </constraints>
+                                <date key="minimumDate" timeIntervalSinceReferenceDate="-978267600">
+                                    <!--1970-01-01 11:00:00 +0000-->
+                                </date>
+                                <date key="maximumDate" timeIntervalSinceReferenceDate="1167562800">
+                                    <!--2037-12-31 11:00:00 +0000-->
+                                </date>
+                            </datePicker>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ld5-a4-QLk"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="ColorFirst"/>
                         <constraints>
-                            <constraint firstItem="zHt-VU-1ta" firstAttribute="leading" secondItem="Kxn-dE-OSQ" secondAttribute="leading" id="31a-LG-fQz"/>
+                            <constraint firstItem="zHt-VU-1ta" firstAttribute="leading" secondItem="Kxn-dE-OSQ" secondAttribute="leading" constant="-23" id="31a-LG-fQz"/>
+                            <constraint firstAttribute="bottom" secondItem="fpv-qg-WjN" secondAttribute="bottom" constant="325" id="3TG-HI-wxQ"/>
                             <constraint firstItem="zHt-VU-1ta" firstAttribute="centerX" secondItem="vXN-pI-icm" secondAttribute="centerX" id="5RH-cM-Ehb"/>
                             <constraint firstItem="ld5-a4-QLk" firstAttribute="bottom" secondItem="Kxn-dE-OSQ" secondAttribute="bottom" constant="208.66666666666663" id="Aaj-3A-8ct"/>
-                            <constraint firstItem="zHt-VU-1ta" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="142" id="IJO-fS-l1W"/>
+                            <constraint firstItem="zHt-VU-1ta" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="119" id="IJO-fS-l1W"/>
+                            <constraint firstItem="fpv-qg-WjN" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="111" id="NBC-dl-Ebg"/>
                             <constraint firstItem="vXN-pI-icm" firstAttribute="centerX" secondItem="r0r-us-cpu" secondAttribute="centerX" id="NL3-DA-a3k"/>
-                            <constraint firstItem="vXN-pI-icm" firstAttribute="top" secondItem="zHt-VU-1ta" secondAttribute="bottom" constant="25" id="Qdm-z0-H5Q"/>
-                            <constraint firstItem="r0r-us-cpu" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="117" id="WUm-Jf-JGZ"/>
-                            <constraint firstItem="r0r-us-cpu" firstAttribute="centerX" secondItem="fpv-qg-WjN" secondAttribute="centerX" id="Z1g-od-vVR"/>
-                            <constraint firstItem="fpv-qg-WjN" firstAttribute="top" secondItem="r0r-us-cpu" secondAttribute="bottom" constant="25" id="dmv-I0-B0e"/>
+                            <constraint firstItem="vXN-pI-icm" firstAttribute="top" secondItem="zHt-VU-1ta" secondAttribute="bottom" constant="21" id="Qdm-z0-H5Q"/>
+                            <constraint firstItem="fpv-qg-WjN" firstAttribute="top" secondItem="r0r-us-cpu" secondAttribute="bottom" constant="24" id="TC5-Uw-jjx"/>
+                            <constraint firstItem="fpv-qg-WjN" firstAttribute="centerX" secondItem="r0r-us-cpu" secondAttribute="centerX" id="Vzg-9R-6ME"/>
+                            <constraint firstItem="r0r-us-cpu" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="86" id="WUm-Jf-JGZ"/>
                             <constraint firstItem="r0r-us-cpu" firstAttribute="centerX" secondItem="Kxn-dE-OSQ" secondAttribute="centerX" id="e8b-yB-haM"/>
-                            <constraint firstItem="r0r-us-cpu" firstAttribute="top" secondItem="vXN-pI-icm" secondAttribute="bottom" constant="72" id="fiM-wV-AvS"/>
+                            <constraint firstItem="r0r-us-cpu" firstAttribute="top" secondItem="vXN-pI-icm" secondAttribute="bottom" constant="70" id="fiM-wV-AvS"/>
                             <constraint firstItem="zHt-VU-1ta" firstAttribute="centerX" secondItem="ZUQ-HA-26M" secondAttribute="centerX" id="jEC-JQ-mVK"/>
                             <constraint firstItem="vXN-pI-icm" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="121" id="mSh-HP-KEm"/>
-                            <constraint firstItem="zHt-VU-1ta" firstAttribute="top" secondItem="ld5-a4-QLk" secondAttribute="top" constant="151" id="rMH-lG-ZaM"/>
-                            <constraint firstItem="fpv-qg-WjN" firstAttribute="leading" secondItem="ld5-a4-QLk" secondAttribute="leading" constant="107" id="vOS-hg-F8A"/>
-                            <constraint firstItem="Kxn-dE-OSQ" firstAttribute="top" secondItem="fpv-qg-WjN" secondAttribute="bottom" constant="47" id="vSc-ev-yQm"/>
+                            <constraint firstItem="zHt-VU-1ta" firstAttribute="top" secondItem="ld5-a4-QLk" secondAttribute="top" constant="148" id="rMH-lG-ZaM"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="K2s-SO-LIL"/>
@@ -202,11 +212,17 @@
         </scene>
     </scenes>
     <resources>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ColorFirst">
+            <color red="0.10980392156862745" green="0.13333333333333333" blue="0.22745098039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="ColorSecond">
-            <color red="0.31372549019607843" green="0.48627450980392156" blue="0.60392156862745094" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.24313725490196078" green="0.3411764705882353" blue="0.72941176470588232" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="ColorThird">
-            <color red="0.8784313725490196" green="0.94509803921568625" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.98431372549019602" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
