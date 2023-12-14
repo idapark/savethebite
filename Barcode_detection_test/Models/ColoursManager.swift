@@ -9,6 +9,7 @@ import UIKit
 
 struct ColoursManager {
     static let first = UIColor(named: "ColorFirst")
+    static let first2 = UIColor(named: "ColorFirst2")
     static let second = UIColor(named: "ColorSecond")
     static let third = UIColor(named: "ColorThird")
     static let fourth = UIColor(named: "ColorFourth")

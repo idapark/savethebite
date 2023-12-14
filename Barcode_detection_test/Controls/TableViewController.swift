@@ -78,13 +78,6 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         emptyTableViewContainerView?.addSubview(emptyMessageLabel!)
 
         emptyTableViewContainerView?.isHidden = true // Initially hidden
-        /*
-        emptyTableViewGifView = UIImageView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 200))
-        emptyTableViewGifView?.loadGif(name: "techny-shopping-basket-full-of-groceries")
-        emptyTableViewGifView?.contentMode = .scaleAspectFit
-        tableView.addSubview(emptyTableViewGifView!)
-        emptyTableViewGifView?.isHidden = true // Initially hidden
-         */
         
     }
     
@@ -129,10 +122,6 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         return items[date]?.count ?? 0
     }
     
-    //override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    //        let date = Array(items.keys)[section]
-    //        return items[date]?.count ?? 0
-    //    }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let date = Array(items.keys)[section]
@@ -172,104 +161,6 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         return cell
     }
     
-    /*
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = ColoursManager.first // Choose a background color
-
-        let headerLabel = UILabel()
-        headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerLabel.textColor = ColoursManager.third // Set your desired text color
-        headerLabel.font = ColoursManager.font1 // Customize font as needed
-
-        let date = Array(items.keys)[section]
-        headerLabel.text = DateFormatter.shared.string(from: date)
-        headerView.addSubview(headerLabel)
-
-        if let sectionItems = items[date], sectionItems.contains(where: { daysUntilExpiration(from: $0.date!) <= 3 }) {
-            let symbolImageView = UIImageView()
-            symbolImageView.translatesAutoresizingMaskIntoConstraints = false
-            symbolImageView.image = UIImage(systemName: "exclamationmark.triangle.fill")
-            symbolImageView.tintColor = ColoursManager.fourth
-            headerView.addSubview(symbolImageView)
-            
-            let warningLabel = UILabel()
-            warningLabel.translatesAutoresizingMaskIntoConstraints = false
-            warningLabel.text = "Items are about to expire"
-            warningLabel.font = UIFont.systemFont(ofSize: 14) // Adjust font size as needed
-            warningLabel.textColor = ColoursManager.fourth // Adjust color as needed
-            headerView.addSubview(warningLabel)
-            
-            symbolImageView.layer.add(pulseAnimation(), forKey: "pulse")
-
-            NSLayoutConstraint.activate([
-                symbolImageView.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-                symbolImageView.leadingAnchor.constraint(equalTo: headerLabel.trailingAnchor, constant: 8),
-                symbolImageView.widthAnchor.constraint(equalToConstant: 20),
-                symbolImageView.heightAnchor.constraint(equalToConstant: 20),
-                
-                warningLabel.centerYAnchor.constraint(equalTo: symbolImageView.centerYAnchor),
-                warningLabel.leadingAnchor.constraint(equalTo: symbolImageView.trailingAnchor, constant: 4)
-            ])
-        }
-
-        NSLayoutConstraint.activate([
-            headerLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16)
-        ])
-
-        return headerView
-    }
-     */
-    
-    /*
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        let sortedKeys = items.keys.sorted(by: <)
-        let date = sortedKeys[section]
-        // headerView.backgroundColor = determineHeaderColor(for: date)
-
-        let headerLabel = UILabel()
-        headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerLabel.textColor = ColoursManager.third
-        headerLabel.font = ColoursManager.font1
-        headerLabel.text = DateFormatter.shared.string(from: date)
-        headerView.addSubview(headerLabel)
-        
-        let symbolImageView = UIImageView()
-        symbolImageView.translatesAutoresizingMaskIntoConstraints = false
-        symbolImageView.image = UIImage(systemName: "exclamationmark.triangle.fill")
-        symbolImageView.tintColor = determineHeaderColor(for: date)
-        headerView.addSubview(symbolImageView)
-        
-        let warningLabel = UILabel()
-        warningLabel.translatesAutoresizingMaskIntoConstraints = false
-        warningLabel.text = "Items are about to expire"
-        warningLabel.font = UIFont.systemFont(ofSize: 14) // Adjust font size as needed
-        warningLabel.textColor = determineHeaderColor(for: date) // Adjust color as needed
-        headerView.addSubview(warningLabel)
-        
-        symbolImageView.layer.add(pulseAnimation(), forKey: "pulse")
-
-        NSLayoutConstraint.activate([
-            symbolImageView.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            symbolImageView.leadingAnchor.constraint(equalTo: headerLabel.trailingAnchor, constant: 8),
-            symbolImageView.widthAnchor.constraint(equalToConstant: 20),
-            symbolImageView.heightAnchor.constraint(equalToConstant: 20),
-            
-            warningLabel.centerYAnchor.constraint(equalTo: symbolImageView.centerYAnchor),
-            warningLabel.leadingAnchor.constraint(equalTo: symbolImageView.trailingAnchor, constant: 4)
-        ])
-
-        NSLayoutConstraint.activate([
-            headerLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16)
-        ])
-
-        return headerView
-    }
-    
-     */
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
@@ -363,31 +254,6 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         return pulse
     }
     
-    /*
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = ColoursManager.first // Choose a background color
-
-        let headerLabel = UILabel()
-        headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        headerLabel.textColor = ColoursManager.third // Set your desired text color
-        //headerLabel.font = UIFont.boldSystemFont(ofSize: 16) // Customize font as needed
-        headerLabel.font = ColoursManager.font1 // Customize font as needed
-
-        let date = Array(items.keys)[section]
-        headerLabel.text = DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none)
-
-        headerView.addSubview(headerLabel)
-
-        NSLayoutConstraint.activate([
-            headerLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16), // Adjust the padding as needed
-            headerLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16)
-        ])
-
-        return headerView
-    }
-     */
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40 // Adjust the height as needed

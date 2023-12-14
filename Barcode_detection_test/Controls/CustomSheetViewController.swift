@@ -54,62 +54,69 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         let buttonWidth: CGFloat = view.bounds.width - 40  // Example width
         let spacing: CGFloat = 20
         
-        view.backgroundColor = UIColor.systemBackground
+        view.backgroundColor = ColoursManager.first2
 
-        // Setup and add the barcode button
+        
+        //Setup and add the barcode button
         barcodeButton.setTitle("Scan\nBarcode", for: .normal)
-        barcodeButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        barcodeButton.titleLabel?.font = UIFont(name: "Futura-Bold", size: 13)
         barcodeButton.titleLabel?.textAlignment = .center       // Center the text
         barcodeButton.titleLabel?.numberOfLines = 0
-        barcodeButton.setTitleColor(UIColor.label, for: .normal)
+        barcodeButton.setTitleColor(ColoursManager.third, for: .normal)
+        barcodeButton.backgroundColor = ColoursManager.second
         barcodeButton.addTarget(self, action: #selector(barcodeButtonTapped), for: .touchUpInside)
         barcodeButton.frame = CGRect(x: 20, y: spacing, width: buttonWidth, height: buttonHeight)
         barcodeButton.layer.borderWidth = 2.0
         barcodeButton.layer.cornerRadius = 8
-        barcodeButton.layer.borderColor = UIColor.label.cgColor
+        barcodeButton.layer.borderColor = ColoursManager.second!.cgColor
         view.addSubview(barcodeButton)
 
         // Setup and add the expiration date button
         expirationDateButton.setTitle("Scan\nExpiration Date", for: .normal)
-        expirationDateButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        expirationDateButton.titleLabel?.font = UIFont(name: "Futura-Bold", size: 13)
         expirationDateButton.titleLabel?.textAlignment = .center       // Center the text
         expirationDateButton.titleLabel?.numberOfLines = 0
-        expirationDateButton.setTitleColor(UIColor.label, for: .normal)
+        expirationDateButton.setTitleColor(ColoursManager.third, for: .normal)
+        expirationDateButton.backgroundColor = ColoursManager.second
         expirationDateButton.addTarget(self, action: #selector(expirationDateButtonTapped), for: .touchUpInside)
         expirationDateButton.frame = CGRect(x: 20, y: barcodeButton.frame.maxY + spacing, width: buttonWidth, height: buttonHeight)
         expirationDateButton.layer.borderWidth = 2.0
         expirationDateButton.layer.cornerRadius = 8
-        expirationDateButton.layer.borderColor = UIColor.label.cgColor
+        expirationDateButton.layer.borderColor = ColoursManager.second!.cgColor
         view.addSubview(expirationDateButton)
 
         // Setup and add the done button
         doneButton.setTitle("Done", for: .normal)
+        doneButton.titleLabel?.font = UIFont(name: "Futura-Bold", size: 15)
         doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         doneButton.frame = CGRect(x: 20, y: expirationDateButton.frame.maxY + spacing, width: buttonWidth, height: buttonHeight)
-        doneButton.setTitleColor(UIColor.label, for: .normal)
+        doneButton.setTitleColor(ColoursManager.third, for: .normal)
+        doneButton.backgroundColor = ColoursManager.second
         doneButton.layer.borderWidth = 2.0
         doneButton.layer.cornerRadius = 8
-        doneButton.layer.borderColor = UIColor.label.cgColor
+        doneButton.layer.borderColor = ColoursManager.second!.cgColor
         view.addSubview(doneButton)
         
         // Configure the barcode result label
         barcodeResultLabel.translatesAutoresizingMaskIntoConstraints = false
         barcodeResultLabel.textAlignment = .center
-        barcodeResultLabel.textColor = UIColor.label
+        barcodeResultLabel.font = UIFont(name: "Futura", size: 13)
         barcodeResultLabel.layer.borderWidth = 2.0
         barcodeResultLabel.layer.cornerRadius = 8
-        barcodeResultLabel.layer.borderColor = UIColor.label.cgColor
+        barcodeResultLabel.layer.borderColor = ColoursManager.third!.cgColor
         view.addSubview(barcodeResultLabel)
 
         // Configure the expiration date result label
         expirationDateResultLabel.translatesAutoresizingMaskIntoConstraints = false
         expirationDateResultLabel.textAlignment = .center
-        expirationDateResultLabel.textColor = UIColor.label
+        expirationDateResultLabel.font = UIFont(name: "Futura", size: 13)
         expirationDateResultLabel.layer.borderWidth = 2.0
         expirationDateResultLabel.layer.cornerRadius = 8
-        expirationDateResultLabel.layer.borderColor = UIColor.label.cgColor
+        expirationDateResultLabel.layer.borderColor = ColoursManager.third!.cgColor
         view.addSubview(expirationDateResultLabel)
+
         
+        // Configure the feedback label
         feedbackLabel.isHidden = true
         feedbackLabel.translatesAutoresizingMaskIntoConstraints = false
         feedbackLabel.textAlignment = .center
@@ -201,13 +208,13 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
                 if let detectedText = detectedText {
                     print("Detected barcode: \(detectedText)")
                     self?.barcodeResultLabel.text = detectedText
-                    self?.barcodeResultLabel.textColor = UIColor.label
+                    self?.barcodeResultLabel.textColor = ColoursManager.third
                     // Handle the detected barcode text
                 } else {
                     print("No barcode detected")
                     // Handle the case where no barcode is detected
                     self?.barcodeResultLabel.text = "No barcode detected"
-                    self?.barcodeResultLabel.textColor = UIColor.red
+                    self?.barcodeResultLabel.textColor = ColoursManager.fourth
                 }
             }
         case .expirationDate:
@@ -217,12 +224,12 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
                     print("Detected text: \(detectedText)")
                     // Handle the detected text (expiration date)
                     self?.expirationDateResultLabel.text = detectedText
-                    self?.expirationDateResultLabel.textColor = UIColor.label
+                    self?.expirationDateResultLabel.textColor =  ColoursManager.third
                 } else {
                     print("No text detected")
                     // Handle the case where no text is detected
                     self?.expirationDateResultLabel.text = "Expiration date was not detected"
-                    self?.expirationDateResultLabel.textColor = UIColor.red
+                    self?.expirationDateResultLabel.textColor = ColoursManager.fourth
                     
                 }
             }
@@ -446,7 +453,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
     }
 
     func convertToFourDigitYearString(from dateString: String, year: Int, formatter: DateFormatter) -> String {
-        let century = year / 100 * 100  // Get the century part of the current year
+        // let century = year / 100 * 100  // Get the century part of the current year
         let twoDigitYear = year % 100   // Get the last two digits of the current year
 
         formatter.dateFormat = "yy"
