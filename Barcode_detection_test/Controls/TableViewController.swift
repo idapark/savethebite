@@ -34,14 +34,25 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         let sortedItems = itemManager.fetchItems().sorted(by: { $0.key < $1.key })
         items = Dictionary(uniqueKeysWithValues: sortedItems)
 
-        
-        self.navigationItem.title = "SaveTheBite"
-        
         tableView.backgroundColor = ColoursManager.first
+        
         // Customize navigation bar appearance
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = ColoursManager.second // Dynamic color for background
-        appearance.titleTextAttributes = [.foregroundColor: ColoursManager.third as Any] // Dynamic color for title
+        appearance.titleTextAttributes = [.foregroundColor: ColoursManager.third as Any]
+        
+        let buttonFont = UIFont(name: "GillSans-SemiBold", size: 16.0) ?? UIFont.systemFont(ofSize: 16.0)
+        let buttonAttributes: [NSAttributedString.Key: Any] = [
+            .font: buttonFont,
+            .foregroundColor: ColoursManager.third as Any
+        ]
+        
+        // Set the button appearance for the navigation bar
+        appearance.buttonAppearance.normal.titleTextAttributes = buttonAttributes
+        appearance.buttonAppearance.highlighted.titleTextAttributes = buttonAttributes
+        
+        let customFont = UIFont(name: "GillSans-SemiBold", size: 20.0) ?? UIFont.systemFont(ofSize: 20.0)
+        appearance.titleTextAttributes = [.foregroundColor: ColoursManager.third as Any, .font: customFont] // Dynamic color for title
 
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
@@ -54,7 +65,13 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         if #available(iOS 15.0, *) {
             navigationController?.navigationBar.compactAppearance = appearance
         }
+        
+        self.navigationItem.title = "SaveTheBite"
+        
         //itemManager.populateItems()
+        
+        
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Item", style: .plain, target: self, action: #selector(rightBarButtonTapped))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "About", style: .plain, target: self, action: #selector(leftBarButtonTapped))
         
@@ -150,13 +167,20 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                 cell.layer.cornerRadius = 10
                 cell.layer.borderWidth = 2
                 cell.layer.borderColor = determineHeaderColor(for: date).cgColor
+                //cell.contentView.frame = cell.bounds.insetBy(dx: 10, dy: 5)
+                //cell.contentView.clipsToBounds = true
             } else {
                 // Reset to default appearance
                 cell.layer.cornerRadius = 10
                 cell.layer.borderWidth = 0
+                cell.layer.borderColor = ColoursManager.first?.cgColor
+                //cell.contentView.frame = cell.bounds.insetBy(dx: 10, dy: 5)
+                //cell.contentView.clipsToBounds = true
             }
         }
+    
         print("cellForRowAt: cell is being configured with the correct item and that the item has an image")
+        
         
         return cell
     }
@@ -202,7 +226,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             let warningLabel = UILabel()
             warningLabel.translatesAutoresizingMaskIntoConstraints = false
             warningLabel.text = warningMessage
-            warningLabel.font = UIFont.systemFont(ofSize: 14)
+            warningLabel.font = UIFont(name: "GillSans-SemiBold", size: 14)
             warningLabel.textColor = color
             headerView.addSubview(warningLabel)
 
