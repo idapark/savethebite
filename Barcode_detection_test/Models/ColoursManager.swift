@@ -12,6 +12,7 @@ struct ColoursManager {
     static let second = UIColor(named: "ColorSecond")
     static let third = UIColor(named: "ColorThird")
     static let fourth = UIColor(named: "ColorFourth")
+    static let fifth = UIColor(named: "ColorFifth")
     
     static let font1 = UIFont(name: "Futura Bold", size: 16)
 }
