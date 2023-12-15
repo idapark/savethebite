@@ -1,37 +1,47 @@
 //
 //  CustomSheetViewController.swift
-//  Barcode_detection_test
+//  SaveTheBite
 //
 //  Created by Ida Parkkali on 24.11.2023.
 //
+// This class is used to handle reading barcode and expiration date using a camera
+
+// Importing necessary frameworks
 import UIKit
 import Lottie
 
+// CustomSheetViewController class definition, conforming to UIImagePickerControllerDelegate and UINavigationControllerDelegate for image handling
 class CustomSheetViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    // Enumeration defining the scan modes available in the application
     enum ScanMode {
         case barcode
         case expirationDate
         case none
     }
     
+    // Delegate variable for communication with other view controllers
     weak var delegate: CustomSheetViewControllerDelegate?
     
+    // Array containing various date formats to handle different date strings
     var dateFormats: [String] {
+        // List of different date formats to be recognized
         return [
             "dd MM yyyy", "d MM yyyy", "dd M yyyy", "d M yyyy",
             "dd.MM.yyyy", "d.MM.yyyy", "dd.M.yyyy", "d.M.yyyy",
             "dd-MM-yyyy", "d-MM-yyyy", "dd-M-yyyy", "d-M-yyyy",
             "dd/MM/yyyy", "d/MM/yyyy", "dd/M/yyyy", "d/M/yyyy",
             "MM/yyyy", "dd.MM.yy",
-            "dd.MM.", "ddMMyy", // Short formats without year
-            // Include other formats as needed
+            "dd.MM.", "ddMMyy",
+           
         ]
     }
     
+    // Current scanning mode, initialized to 'none'
     var currentScanMode: ScanMode = .none
-    let animationView = LottieAnimationView()
     
+    // UI elements declaration
+    let animationView = LottieAnimationView()
     let barcodeButton = UIButton()
     let expirationDateButton = UIButton()
     let doneButton = UIButton()
@@ -39,28 +49,38 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
     let expirationDateResultLabel = UILabel()
     let feedbackLabel = UILabel()
     
+    // Utility classes for barcode and text detection
     let barcodeDetectionUtility = DetectBarcodeManager()
     let textDetectionUtility = DetectTextManager()
+    
+    // Image picker for capturing photos from the camera
     let imagePicker = UIImagePickerController()
+    
+    // Utility class for fetching product information
     let productFetcher = ProductFetcher()
 
+    // Called after the view controller's view is loaded into memory
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Disabling the auto-resizing mask translation for buttons
+        // This allows for manual layout using Auto Layout constraints
         barcodeButton.translatesAutoresizingMaskIntoConstraints = false
         expirationDateButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         
+        // Defining the dimensions and spacing for the buttons
         let buttonHeight: CGFloat = 50
-        let buttonWidth: CGFloat = view.bounds.width - 40  // Example width
+        let buttonWidth: CGFloat = view.bounds.width - 40
         let spacing: CGFloat = 20
         
+        // Setting the background color of the view
         view.backgroundColor = ColoursManager.first2
-
         
-        //Setup and add the barcode button
+        // Configuring the barcode button with title, font, and alignment
         barcodeButton.setTitle("Scan\nBarcode", for: .normal)
         barcodeButton.titleLabel?.font = UIFont(name: "Futura-Bold", size: 13)
-        barcodeButton.titleLabel?.textAlignment = .center       // Center the text
+        barcodeButton.titleLabel?.textAlignment = .center
         barcodeButton.titleLabel?.numberOfLines = 0
         barcodeButton.setTitleColor(ColoursManager.third, for: .normal)
         barcodeButton.backgroundColor = ColoursManager.second
@@ -71,10 +91,10 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         barcodeButton.layer.borderColor = ColoursManager.second!.cgColor
         view.addSubview(barcodeButton)
 
-        // Setup and add the expiration date button
+        // Configuring the expiration date button with title, font, and alignment
         expirationDateButton.setTitle("Scan\nExpiration Date", for: .normal)
         expirationDateButton.titleLabel?.font = UIFont(name: "Futura-Bold", size: 13)
-        expirationDateButton.titleLabel?.textAlignment = .center       // Center the text
+        expirationDateButton.titleLabel?.textAlignment = .center
         expirationDateButton.titleLabel?.numberOfLines = 0
         expirationDateButton.setTitleColor(ColoursManager.third, for: .normal)
         expirationDateButton.backgroundColor = ColoursManager.second
@@ -85,7 +105,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         expirationDateButton.layer.borderColor = ColoursManager.second!.cgColor
         view.addSubview(expirationDateButton)
 
-        // Setup and add the done button
+        // Configuring the done button with title, font, and alignment
         doneButton.setTitle("Done", for: .normal)
         doneButton.titleLabel?.font = UIFont(name: "Futura-Bold", size: 15)
         doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
@@ -97,7 +117,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         doneButton.layer.borderColor = ColoursManager.second!.cgColor
         view.addSubview(doneButton)
         
-        // Configure the barcode result label
+        // Configuring the barcode result label with title, font, and alignment
         barcodeResultLabel.translatesAutoresizingMaskIntoConstraints = false
         barcodeResultLabel.textAlignment = .center
         barcodeResultLabel.font = UIFont(name: "Futura", size: 13)
@@ -106,7 +126,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         barcodeResultLabel.layer.borderColor = ColoursManager.third!.cgColor
         view.addSubview(barcodeResultLabel)
 
-        // Configure the expiration date result label
+        // Configuring the expiration date result label with title, font, and alignment
         expirationDateResultLabel.translatesAutoresizingMaskIntoConstraints = false
         expirationDateResultLabel.textAlignment = .center
         expirationDateResultLabel.font = UIFont(name: "Futura", size: 13)
@@ -116,7 +136,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         view.addSubview(expirationDateResultLabel)
 
         
-        // Configure the feedback label
+        // Configuring the feedback label, initially hidden
         feedbackLabel.isHidden = true
         feedbackLabel.translatesAutoresizingMaskIntoConstraints = false
         feedbackLabel.textAlignment = .center
@@ -129,6 +149,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
     
     }
     
+    // Function to set up auto layout constraints
     private func setupConstraints() {
         // Clear any existing constraints if necessary
         view.removeConstraints(view.constraints)
@@ -137,24 +158,24 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         NSLayoutConstraint.activate([
             barcodeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             barcodeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            barcodeButton.widthAnchor.constraint(equalToConstant: 100), // Set a fixed width
-            barcodeButton.heightAnchor.constraint(equalToConstant: 50) // Set a fixed height
+            barcodeButton.widthAnchor.constraint(equalToConstant: 100),
+            barcodeButton.heightAnchor.constraint(equalToConstant: 50)
         ])
 
         // Expiration Date Button Constraints
         NSLayoutConstraint.activate([
             expirationDateButton.topAnchor.constraint(equalTo: barcodeButton.bottomAnchor, constant: 20),
             expirationDateButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            expirationDateButton.widthAnchor.constraint(equalToConstant: 100), // Set a fixed width
-            expirationDateButton.heightAnchor.constraint(equalToConstant: 50) // Set a fixed height
+            expirationDateButton.widthAnchor.constraint(equalToConstant: 100),
+            expirationDateButton.heightAnchor.constraint(equalToConstant: 50)
         ])
 
         // Done Button Constraints
         NSLayoutConstraint.activate([
-                doneButton.centerXAnchor.constraint(equalTo: view.centerXAnchor), // Horizontally center in view
-                doneButton.topAnchor.constraint(equalTo: expirationDateButton.bottomAnchor, constant: 20), // Position below the expiration date button
-                doneButton.widthAnchor.constraint(equalToConstant: 100), // Set a fixed width
-                doneButton.heightAnchor.constraint(equalToConstant: 50) // Set a fixed height
+                doneButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                doneButton.topAnchor.constraint(equalTo: expirationDateButton.bottomAnchor, constant: 20),
+                doneButton.widthAnchor.constraint(equalToConstant: 100),
+                doneButton.heightAnchor.constraint(equalToConstant: 50)
             ])
 
         // Barcode Result Label Constraints
@@ -162,7 +183,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
             barcodeResultLabel.leadingAnchor.constraint(equalTo: barcodeButton.trailingAnchor, constant: 10),
             barcodeResultLabel.centerYAnchor.constraint(equalTo: barcodeButton.centerYAnchor),
             barcodeResultLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            barcodeResultLabel.heightAnchor.constraint(equalTo: barcodeButton.heightAnchor) // Set label height equal to button height
+            barcodeResultLabel.heightAnchor.constraint(equalTo: barcodeButton.heightAnchor)
         ])
 
         // Expiration Date Result Label Constraints
@@ -170,37 +191,41 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
             expirationDateResultLabel.leadingAnchor.constraint(equalTo: expirationDateButton.trailingAnchor, constant: 10),
             expirationDateResultLabel.centerYAnchor.constraint(equalTo: expirationDateButton.centerYAnchor),
             expirationDateResultLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            expirationDateResultLabel.heightAnchor.constraint(equalTo: expirationDateButton.heightAnchor) // Set label height equal to button height
+            expirationDateResultLabel.heightAnchor.constraint(equalTo: expirationDateButton.heightAnchor)
         ])
         
         // Feedback Result Label Constraints
         NSLayoutConstraint.activate([
             feedbackLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            feedbackLabel.topAnchor.constraint(equalTo: doneButton.bottomAnchor, constant: 20), // Position
-            feedbackLabel.widthAnchor.constraint(equalToConstant: 100), // Set a fixed width
-            feedbackLabel.heightAnchor.constraint(equalToConstant: 50) // Set a fixed height height
+            feedbackLabel.topAnchor.constraint(equalTo: doneButton.bottomAnchor, constant: 20),
+            feedbackLabel.widthAnchor.constraint(equalToConstant: 100),
+            feedbackLabel.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
 
+    // Function called when the barcode button is tapped
     @objc func barcodeButtonTapped() {
         currentScanMode = .barcode
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
             print("Camera not available")
             return
         }
-
+        
+        // Handling barcode scanning mode and initializing the camera
         imagePicker.delegate = self
         imagePicker.sourceType = .camera
-        imagePicker.allowsEditing = false // or true, depending on your need
+        imagePicker.allowsEditing = false
 
         present(imagePicker, animated: true)
     }
     
+    // Delegate function for handling image picker result
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         picker.dismiss(animated: true, completion: nil)
 
         guard let image = info[.originalImage] as? UIImage, let ciImage = CIImage(image: image) else { return }
 
+        // Handling image picking result based on the current scanning mode (barcode or expiration date)
         switch currentScanMode {
         case .barcode:
             barcodeDetectionUtility.detectBarcode(in: ciImage) { [weak self] detectedText in
@@ -241,16 +266,15 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         currentScanMode = .none
     }
     
-
-
+    // Function called when the expiration date button is tapped
     @objc func expirationDateButtonTapped() {
-        // Handle expiration date button tap
         currentScanMode = .expirationDate
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
             print("Camera not available")
             return
         }
-
+        
+        // Handling expiration date scanning mode and initializing the camera
         imagePicker.delegate = self
         imagePicker.sourceType = .camera
         imagePicker.allowsEditing = false // or true, depending on your need
@@ -258,14 +282,9 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         present(imagePicker, animated: true)
     }
     
-    /*
+    // Function called when the done button is tapped
     @objc func doneButtonTapped() {
-        // Handle done button tap
-        
-        dismiss(animated: true, completion: nil)
-    }
-     */
-    @objc func doneButtonTapped() {
+        // Validating barcode and expiration date inputs and fetching product information
         guard let barcode = barcodeResultLabel.text, !barcode.isEmpty else {
             print("Barcode is empty")
             feedbackLabel.isHidden = false
@@ -286,8 +305,6 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
                 switch result {
                 case .success(let product):
                     // Handle the success case
-                    // Optionally use expirationDate here as needed
-                    // ...
                     if let urlString = product.image_front_url, !urlString.isEmpty, let url = URL(string: urlString) {
                         self?.loadImage(from: url) { image in
                             if let image = image {
@@ -300,6 +317,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
                                 
                                 
                             } else {
+                                // problem with image
                                 print("Error loading image")
                                 self?.feedbackLabel.isHidden = false
                                 self?.feedbackLabel.text = "Error loading image"
@@ -322,15 +340,13 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         }
     }
     
+    // Function to show an alert with the image of the scanned product
     func showImageAlert(name: String, picture: UIImage, date1: Date) {
-        // Add extra newlines to create space for the image
-        //let dateFormatter = DateFormatter()
-        //dateFormatter.dateFormat = "dd.MM.yyyy" // Custom format for date
 
         let formattedDate = DateFormatter.shared.string(from: date1)
         
-
-        let message = "\(name)\n\(formattedDate)\n\n\n\n\n\n\n\n\n\n" // Using the formatted date
+        // Setting up and displaying an alert with the product image and details
+        let message = "\(name)\n\(formattedDate)\n\n\n\n\n\n\n\n\n\n"
         let alert = UIAlertController(title: "Is this the product you scanned?", message: message, preferredStyle: .alert)
 
         let imageView = UIImageView()
@@ -342,13 +358,13 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: alert.view.centerXAnchor),
-            imageView.topAnchor.constraint(equalTo: alert.view.topAnchor, constant: 125), // Adjust this constant based on the space needed
-            imageView.widthAnchor.constraint(equalToConstant: 250), // Adjust size as needed
-            imageView.heightAnchor.constraint(equalToConstant: 150) // Adjust size as needed
+            imageView.topAnchor.constraint(equalTo: alert.view.topAnchor, constant: 125),
+            imageView.widthAnchor.constraint(equalToConstant: 250),
+            imageView.heightAnchor.constraint(equalToConstant: 150)
         ])
-
+        
+        // right now only "OK" is allowed, in the future "Cancel" should also be an option
         let okAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in
-                //let newItem = Item(title: name, image: picture, date: date1)
                 self?.playAnimation()
                 self?.delegate?.didAddNewItem(title: name, image: picture, date: date1)
                 self?.navigationController?.popViewController(animated: true)
@@ -358,19 +374,21 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
             present(alert, animated: true, completion: nil)
     }
     
+    // Function to play a success animation
     func playAnimation() {
+        // Displaying a Lottie animation on successful scanning and saving
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let currentWindow = windowScene.windows.first(where: { $0.isKeyWindow }) else { return }
 
         currentWindow.addSubview(animationView)
 
         // Set up the animation view
-        animationView.animation = LottieAnimation.named("icons8-success")  // Your animation file name
+        animationView.animation = LottieAnimation.named("icons8-success")
         animationView.contentMode = .scaleAspectFit
         animationView.loopMode = .playOnce
         animationView.animationSpeed = 0.7
         animationView.isHidden = false
-        animationView.alpha = 1  // Start fully visible
+        animationView.alpha = 1
         animationView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -392,8 +410,9 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         }
     }
 
-
+    // MARK: -  Utility functions for loading an image from a URL and handling date parsing
     
+    // Function to load an image from URL
     func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
         DispatchQueue.global().async {
             if let data = try? Data(contentsOf: url) {
@@ -409,6 +428,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         }
     }
     
+    // Function to parse and standardize date strings
     func standardizedDate(from dateString: String) -> Date? {
         let currentYear = Calendar.current.component(.year, from: Date())
         let formatter = DateFormatter()
@@ -425,18 +445,19 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
             return shortDate
         }
 
-        return nil // Return nil if no format matched
+        return nil
     }
 
+    // Helper function to try parsing dates in short formats
     func tryParseShortDate(_ dateString: String, withYear year: Int, formatter: DateFormatter) -> Date? {
-        let shortFormats = ["dd.MM.", "dd.MM.yy", "ddMMyy", "MM/yyyy"] // Include "dd.MM.yy" and "ddMMyy"
+        let shortFormats = ["dd.MM.", "dd.MM.yy", "ddMMyy", "MM/yyyy"]
         let defaultDay = "01" // Default day to use when day is missing
 
         for format in shortFormats {
             formatter.dateFormat = format
             if let date = formatter.date(from: dateString) {
                 if format == "MM/yyyy" {
-                    // For "MM/yyyy" format, prepend the default day
+                    // For "MM/yyyy" format, add the default day
                     formatter.dateFormat = "dd.MM.yyyy"
                     let newDateString = defaultDay + "." + formatter.string(from: date)
                     return formatter.date(from: newDateString)
@@ -452,8 +473,8 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
         return nil
     }
 
+    // Function to convert a two-digit year string to a four-digit year string
     func convertToFourDigitYearString(from dateString: String, year: Int, formatter: DateFormatter) -> String {
-        // let century = year / 100 * 100  // Get the century part of the current year
         let twoDigitYear = year % 100   // Get the last two digits of the current year
 
         formatter.dateFormat = "yy"
@@ -464,19 +485,7 @@ class CustomSheetViewController: UIViewController, UIImagePickerControllerDelega
             return dateString.replacingOccurrences(of: String(twoDigitYear), with: fourDigitYear)
         }
 
-        return dateString // Return original string if conversion is not possible
+        return dateString
     }
 }
 
-
-// might not be needed?
-/*
- extension DateFormatter {
- static let yourFormatter: DateFormatter = {
- let formatter = DateFormatter()
- // Set the date format according to how your date is being displayed
- formatter.dateFormat = "dd/MM/yyyy" // Modify this as per your date format
- return formatter
- }()
- }
- */

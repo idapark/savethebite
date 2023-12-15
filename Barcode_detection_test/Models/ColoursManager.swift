@@ -7,6 +7,7 @@
 
 import UIKit
 
+// access constant colours and fonts for the app
 struct ColoursManager {
     static let first = UIColor(named: "ColorFirst")
     static let first2 = UIColor(named: "ColorFirst2")

@@ -1,5 +1,8 @@
 import Foundation
 
+// Swift playground file to test the URL fetching based on the barcode number
+
+
 // Define the model to match the JSON structure
 struct ProductData: Codable {
     let product: Product

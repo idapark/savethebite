@@ -1,46 +1,53 @@
 //
 //  TableViewController.swift
-//  Barcode_detection_test
+//  SaveTheBite
 //
 //  Created by Ida Parkkali on 14.11.2023.
 //
+// This class handels the display of items in the TableView
 
+
+// Import necessary frameworks
 import UIKit
 import AVFoundation
 import Vision
 import CoreData
+import Lottie
 
-
+// Define TableViewController class, conforming to necessary protocols for image picking and navigation
 class TableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    //var itemManager = ItemManager()
+    // Properties declaration
     var itemManager: ItemManager!
-    // let imagePicker = UIImagePickerController()
-    // let textDetectionUtility = DetectBarcodeManager()
     let sheetViewController = CustomSheetViewController()
     var emptyTableViewGifView: UIImageView?
     var emptyTableViewContainerView: UIView?
     var emptyMessageLabel: UILabel?
     var items: [Date: [StoredItem]] = [:]
     
+    // Called after the controller's view is loaded into memory
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Fetching the managed context from the AppDelegate to use Core Data
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegate.persistentContainer.viewContext
+        
+        // Initialize itemManager and fetch items to display
         itemManager = ItemManager(managedContext: managedContext)
-
         items = itemManager.fetchItems()
         let sortedItems = itemManager.fetchItems().sorted(by: { $0.key < $1.key })
         items = Dictionary(uniqueKeysWithValues: sortedItems)
 
+        // Setting background color for the tableView
         tableView.backgroundColor = ColoursManager.first
         
-        // Customize navigation bar appearance
+        // Customizing the navigation bar appearance
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = ColoursManager.second // Dynamic color for background
         appearance.titleTextAttributes = [.foregroundColor: ColoursManager.third as Any]
         
+        // Button font and attributes setup
         let buttonFont = UIFont(name: "GillSans-SemiBold", size: 16.0) ?? UIFont.systemFont(ofSize: 16.0)
         let buttonAttributes: [NSAttributedString.Key: Any] = [
             .font: buttonFont,
@@ -51,31 +58,32 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         appearance.buttonAppearance.normal.titleTextAttributes = buttonAttributes
         appearance.buttonAppearance.highlighted.titleTextAttributes = buttonAttributes
         
+        // Set custom font for title
         let customFont = UIFont(name: "GillSans-SemiBold", size: 20.0) ?? UIFont.systemFont(ofSize: 20.0)
         appearance.titleTextAttributes = [.foregroundColor: ColoursManager.third as Any, .font: customFont] // Dynamic color for title
 
+        // Configuring the navigation controller's navigation bar
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
+        // Setting up a custom back button
         let backButton = UIBarButtonItem()
         backButton.title = "Back"
-        
         self.navigationItem.backBarButtonItem = backButton
 
+        // Checking for iOS version compatibility for compact appearance
         if #available(iOS 15.0, *) {
             navigationController?.navigationBar.compactAppearance = appearance
         }
         
+        // Setting the navigation title
         self.navigationItem.title = "SaveTheBite"
         
-        //itemManager.populateItems()
-        
-        
-        
+        // Adding buttons to navigation bar
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Item", style: .plain, target: self, action: #selector(rightBarButtonTapped))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "About", style: .plain, target: self, action: #selector(leftBarButtonTapped))
         
-        // Initialize the container view
+        // Setup for displaying an empty table view with a custom message and GIF
         emptyTableViewContainerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 300))  // Adjust height as needed
         tableView.addSubview(emptyTableViewContainerView!)
             
@@ -85,19 +93,20 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         emptyTableViewGifView?.contentMode = .scaleAspectFit
         emptyTableViewContainerView?.addSubview(emptyTableViewGifView!)
 
-        // Initialize and configure the label
+        // Initialize and configure the label for the GIF
         emptyMessageLabel = UILabel(frame: CGRect(x: 0, y: 200, width: tableView.bounds.width, height: 100))
         emptyMessageLabel?.text = "Seems like you don't have any items added.\nYou can add items by pressing the\nbutton on the upper right corner."
         emptyMessageLabel?.textAlignment = .center
         emptyMessageLabel?.textColor = .white
-        emptyMessageLabel?.font = UIFont.systemFont(ofSize: 16) // Adjust font size as needed
-        emptyMessageLabel?.numberOfLines = 0  // Allows for multiple lines
+        emptyMessageLabel?.font = UIFont.systemFont(ofSize: 16)
+        emptyMessageLabel?.numberOfLines = 0
         emptyTableViewContainerView?.addSubview(emptyMessageLabel!)
 
-        emptyTableViewContainerView?.isHidden = true // Initially hidden
+        emptyTableViewContainerView?.isHidden = true // Hidden by default
         
     }
     
+    // Called when the view is about to made visible
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //tableView.reloadData()
@@ -105,6 +114,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         updateTableViewBackground()
     }
     
+    // Update background based on items count
     func updateTableViewBackground() {
         let groupedItems = itemManager.fetchItems()
         let itemCount = groupedItems.values.flatMap { $0 }.count
@@ -112,11 +122,13 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         emptyTableViewContainerView?.isHidden = itemCount != 0
     }
     
+    // Called to notify the view controller that its view has just laid out its subviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         emptyTableViewContainerView?.center = CGPoint(x: tableView.center.x, y: tableView.center.y - (emptyTableViewContainerView?.frame.height ?? 0) / 2)
     }
     
+    // Prepare for segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "MainToPickManually",
            let destinationVC = segue.destination as? PickManuallyViewController {
@@ -128,25 +140,25 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     
     // MARK: - Table view data source
     
+    // Number of sections in the tableView
     override func numberOfSections(in tableView: UITableView) -> Int {
         return items.keys.count
     }
     
-    
+    // Number of rows in each section
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let sortedKeys = items.keys.sorted(by: <)
         let date = sortedKeys[section]
         return items[date]?.count ?? 0
     }
     
-    
+    // Title for each section header
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let date = Array(items.keys)[section]
-        // Format the date as needed
         return DateFormatter.shared.string(from: date)
-        //return DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .none)
     }
     
+    // Configure each cell in the TableView
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as? CustomTableViewCell else {
             fatalError("Expected CustomTableViewCell")
@@ -155,7 +167,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         let sortedKeys = items.keys.sorted(by: <)
         let date = sortedKeys[indexPath.section]
         if let storedItem = items[date]?[indexPath.row] {
-            // Configure your cell...
+            // Configure cell...
             cell.customCellLabel.text = storedItem.title
             if let imageData = storedItem.image {
                 cell.customCellPicture.image = UIImage(data: imageData)
@@ -163,35 +175,35 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             // Check if the item is expiring in 3 days or less
             let daysToExpiration = daysUntilExpiration(from: storedItem.date!)
             if daysToExpiration <= 3 {
-                // Change corner color to red
                 cell.layer.cornerRadius = 10
                 cell.layer.borderWidth = 2
                 cell.layer.borderColor = determineHeaderColor(for: date).cgColor
-                //cell.contentView.frame = cell.bounds.insetBy(dx: 10, dy: 5)
-                //cell.contentView.clipsToBounds = true
             } else {
                 // Reset to default appearance
                 cell.layer.cornerRadius = 10
                 cell.layer.borderWidth = 0
                 cell.layer.borderColor = ColoursManager.first?.cgColor
-                //cell.contentView.frame = cell.bounds.insetBy(dx: 10, dy: 5)
-                //cell.contentView.clipsToBounds = true
+
             }
         }
     
-        print("cellForRowAt: cell is being configured with the correct item and that the item has an image")
-        
+        // for debugging the delete bug
+        if let storedItem = items[date]?[indexPath.row] {
+            print("Displaying item at section \(indexPath.section), row \(indexPath.row): \(storedItem.title ?? "??")")
+        }
         
         return cell
     }
     
-    
+    // Configure the view for the header in each section
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // view for header
         let headerView = UIView()
         let sortedKeys = items.keys.sorted(by: <)
         let date = sortedKeys[section]
-        headerView.backgroundColor = ColoursManager.first // Choose a background color
+        headerView.backgroundColor = ColoursManager.first
 
+        // laber for header
         let headerLabel = UILabel()
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.textColor = ColoursManager.third
@@ -199,8 +211,9 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         headerLabel.text = DateFormatter.shared.string(from: date)
         headerView.addSubview(headerLabel)
 
+        // message for header
         var warningMessage = ""
-        var color: UIColor = ColoursManager.first! // Default color
+        var color: UIColor = ColoursManager.first!
 
         if let sectionItems = items[date] {
             let currentDate = Date()
@@ -208,14 +221,15 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             if sectionItems.contains(where: { $0.date! < currentDate }) {
                 // Some items have already expired
                 warningMessage = "The item has expired"
-                color = ColoursManager.fourth! // Expired items color
+                color = ColoursManager.fourth!
             } else if sectionItems.contains(where: { daysUntilExpiration(from: $0.date!) <= 3 }) {
                 // Some items are about to expire
                 warningMessage = "Items are about to expire"
-                color = ColoursManager.fifth! // Items expiring soon color
+                color = ColoursManager.fifth!
             }
         }
 
+        // add warning icon and fonts to the header
         if !warningMessage.isEmpty {
             let symbolImageView = UIImageView()
             symbolImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -251,9 +265,8 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         return headerView
     }
 
-
+    // Determine header color based on item expiration
     func determineHeaderColor(for sectionDate: Date) -> UIColor {
-        // let currentDate = Date()
         if let sectionItems = items[sectionDate] {
             let closestExpirationDate = sectionItems.compactMap({ $0.date }).min() ?? sectionDate
             let daysToExpiration = daysUntilExpiration(from: closestExpirationDate)
@@ -267,6 +280,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         return ColoursManager.first! // Default color
     }
 
+    // Generate pulse animation for header warning icon
     func pulseAnimation() -> CABasicAnimation {
         let pulse = CABasicAnimation(keyPath: "transform.scale")
         pulse.duration = 0.6
@@ -278,19 +292,24 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         return pulse
     }
     
-    
+    // Set height for section headers
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40 // Adjust the height as needed
     }
     
-    
+    // Handle deleting of items
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let dateKey = Array(items.keys)[indexPath.section]
             
-            if var itemArray = items[dateKey] {
+            if var itemArray = items[dateKey], indexPath.row < itemArray.count {
                 // Fetch the Core Data object to delete
                 let objectToDelete = itemArray[indexPath.row]
+                
+                // debugging the delete bug
+                print("Deleting item at row: \(indexPath.row)")
+                print("Items before deletion: \(itemArray)")
+                print("Deleting item: \(objectToDelete)")
 
                 // Delete the object using ItemManager
                 itemManager.deleteItem(objectToDelete)
@@ -309,10 +328,16 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
 
                 // Update the empty state view
                 updateTableViewBackground()
+                
+                // debugging the delete bug
+                print("Deleting item at row: \(indexPath.row)")
+                print("Items before deletion: \(itemArray)")
+                print("Deleting item: \(objectToDelete)")
             }
         }
     }
     
+    // Calculate days until expiration for an item
     func daysUntilExpiration(from date: Date) -> Int {
         let calendar = Calendar.current
         let startOfCurrentDay = calendar.startOfDay(for: Date())
@@ -324,21 +349,24 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     
     // MARK: - Navigation Bar Button Action
     
+    // Action for right bar button
     @objc func rightBarButtonTapped() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
+        // selection for "Add using camera"
         alertController.addAction(UIAlertAction(title: "Add using camera", style: .default, handler: { [weak self] (action) in
             print("Add using camera pressed")
-            //self?.presentCamera()
             let sheetViewController = CustomSheetViewController()
-            sheetViewController.delegate = self  // Set TableViewController as the delegate
+            sheetViewController.delegate = self
             sheetViewController.modalPresentationStyle = .formSheet
             if let sheetPresentationController = sheetViewController.sheetPresentationController {
-                sheetPresentationController.detents = [.medium()]  // Adjust this as needed
+                sheetPresentationController.detents = [.medium()]
                 sheetPresentationController.prefersGrabberVisible = true
             }
             self?.present(sheetViewController, animated: true, completion: nil)
         }))
+        
+        // selection for "Add manually"
         alertController.addAction(UIAlertAction(title: "Add manually", style: .default, handler: { [weak self] (action) in
             self?.performSegue(withIdentifier: "MainToPickManually", sender: self)
         }))
@@ -351,6 +379,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         self.present(alertController, animated: true, completion: nil)
     }
     
+    // Action for left bar button (info about the app and attributions)
     @objc func leftBarButtonTapped() {
         let alertController = UIAlertController(title: "App Info",
                                                 message: "Made by Ida Parkkali\nIcons by Icons8\nIllustration by Elisabet Guba from Ouch!\nThank you for testing my app!",
@@ -375,6 +404,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     
 }
 
+// Protocol definitions (for this file to work with PickManuallyController and CustomSheetViewController)
 protocol PickManuallyViewControllerDelegate: AnyObject {
     func didAddNewItem(title: String, image: UIImage?, date: Date)}
 
@@ -382,19 +412,20 @@ protocol CustomSheetViewControllerDelegate: AnyObject {
     func didAddNewItem(title: String, image: UIImage?, date: Date)
 }
 
+// Consistency to the PickManuallyViewControllerDelegate and CustomSheetViewControllerDelegate protocols
 extension TableViewController: PickManuallyViewControllerDelegate, CustomSheetViewControllerDelegate {
     func didAddNewItem(title: String, image: UIImage?, date: Date) {
         itemManager.addItem(title: title, image: image, date: date)
-        items = itemManager.fetchItems() // Refresh the items array
-            //tableView.reloadData()
+        items = itemManager.fetchItems()
         updateTableViewBackground()
     }
 }
 
+// Extension for shared DateFormatter instance
 extension DateFormatter {
     static let shared: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy" // Set your desired format
+        formatter.dateFormat = "dd.MM.yyyy"
         return formatter
     }()
 }

@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  Barcode_detection_test
+//  SaveTheBite
 //
 //  Created by Ida Parkkali on 8.11.2023.
 //
