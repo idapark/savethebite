@@ -4,7 +4,7 @@
 
 
 ## Overview
-SaveTheBite is an iOS application designed to help users manage their grocery items more efficiently by maming sure that the food does not expire. It features barcode scanning, text recognition for expiration dates, and a user-friendly interface for organizing items by date. This was my first application I made using Swift as a part of a project course during my bachelor's studies fall 2023, where I chose to learn Swift programming.
+SaveTheBite is an iOS application designed to help users manage their grocery items more efficiently by making sure that the food does not expire. It features barcode scanning, text recognition for expiration dates, and a user-friendly interface for organizing items by date. This was my first application I made using Swift as a part of a project course during my bachelor's studies fall 2023, where I chose to learn Swift programming.
 
 ## Features
 - Barcode Scanning: Users can scan both the barcode and expiration date using the device's camera.
